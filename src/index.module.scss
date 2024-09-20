@@ -1,0 +1,81 @@
+html {
+  --main-background: #04009a;
+  --white: #ffffff;
+  --navbar-bg: #ddd;
+  --navbar-txt: #14a800;
+
+  --border-4: #d5e0d5;
+  --nav-shadow: 0 0 0 1px var(--border-4);
+  --dark-background: #0d0e16;
+  --semi-dark-background: #242633;
+  --light-background: #1b1d2c;
+  --light-background1: #404355;
+  --light-gray: #e8e8e8;
+  --red: #fd434d;
+  --grey: #a0a2b0;
+  --dark-green: #319d0a;
+
+  --pending: #fdd443;
+  --active: #49d747;
+  --finished: #b8b8b8;
+  --rejected: #ff4d56;
+  --upcoming: #5acdf1;
+  --inprogress: #c275ff;
+  --draft: #b8b8b8;
+  --withdraw: #5acdf1;
+  --pay: #ffb1d7;
+
+  --pending-background: rgba(253, 212, 67, 0.22);
+  --active-background: rgba(4, 158, 1, 0.22);
+  --finished-background: rgba(170, 170, 170, 0.22);
+  --rejected-background: rgba(253, 67, 77, 0.22);
+  --upcoming-background: rgba(6, 169, 221, 0.22);
+  --inprogress-background: rgba(171, 67, 253, 0.22);
+  --draft-background: rgba(170, 170, 170, 0.22);
+  --withdraw-background: rgba(90, 205, 241, 0.22);
+  --pay-background: rgba(158, 1, 76, 0.22);
+
+  --active-txt: #008705;
+}
+
+body {
+  margin: 0;
+}
+
+.grid-flex {
+  display: flex;
+}
+
+.iframeContainer {
+  width: 100%;
+  height: 100%;
+  border-width: 0;
+}
+
+@font-face {
+  font-family: 'Gilroy-Bold';
+  src: local('Gilroy-Bold'), url('assets/fonts/Gilroy/Gilroy-Heavy.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Gilroy-SemiBold';
+  src: local('Gilroy-SemiBold'), url('assets/fonts/Gilroy/Gilroy-Bold.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Gilroy-Medium';
+  font-weight: 500;
+  src: local('Gilroy-Medium'), url('assets/fonts/Gilroy/Gilroy-Medium.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Gilroy-Regular';
+  font-weight: 400;
+  src: local('Gilroy-Regular'), url('assets/fonts/Gilroy/Gilroy-Regular.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Gilroy-Light';
+  font-weight: 300;
+  src: local('Gilroy-Light'), url('assets/fonts/Gilroy/Gilroy-Light.woff') format('woff');
+}

@@ -1,0 +1,36 @@
+$breakpoints: (
+  'xs': 480px,
+  'sm': 576px,
+  'md': 768px,
+  'lg': 992px,
+  'xl': 1200px,
+  'xxl': 1600px,
+) !default;
+
+@mixin screens-above($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    $breakpoint-value: map-get($breakpoints, $breakpoint);
+
+    @media screen and (min-width: $breakpoint-value) {
+      @content;
+    }
+  }
+  // If the breakpoint doesn't exist in the map.
+  @else {
+    @warn 'Invalid breakpoint: #{$breakpoint}.';
+  }
+}
+
+@mixin screens-below($breakpoint) {
+  @if map-has-key($breakpoints, $breakpoint) {
+    $breakpoint-value: map-get($breakpoints, $breakpoint);
+
+    @media screen and (max-width: $breakpoint-value - 1) {
+      @content;
+    }
+  }
+  // If the breakpoint doesn't exist in the map.
+  @else {
+    @warn 'Invalid breakpoint: #{$breakpoint}.';
+  }
+}

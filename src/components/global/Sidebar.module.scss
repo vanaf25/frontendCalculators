@@ -1,0 +1,11 @@
+.sidebarContainer {
+  display: flex;
+  width: 300px;
+  min-height: calc(100vh - 70px);
+  background: var(--main-background);
+}
+
+.sidebar {
+  margin: auto;
+  padding: 0 25px;
+}

@@ -1,0 +1,24 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70px;
+  padding: 0 100px;
+  background: var(--navbar-bg);
+}
+
+.navTxt {
+  padding: 0 28px;
+  font-family: 'Gilroy-Medium';
+  font-size: 16px;
+  line-height: 19px;
+  color: var(--navbar-txt);
+  text-decoration: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.navSign {
+  margin-left: 85px;
+}

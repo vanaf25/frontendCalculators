@@ -1,0 +1,50 @@
+.authList {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.title {
+  width: 140px;
+  font-family: 'Gilroy-Medium';
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.required {
+  margin-left: 2px;
+  color: var(--red);
+}
+
+.input {
+  width: 300px;
+  height: 50px;
+  background: var(--dark-background);
+  border: none;
+  border-radius: 8px;
+  box-sizing: border-box;
+  padding: 14px;
+  font-family: 'Gilroy-Medium';
+  font-size: 14px;
+  line-height: 19px;
+  color: #ffffff;
+}
+
+.input:focus {
+  outline: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px var(--dark-background) inset !important;
+  -webkit-text-fill-color: #fff !important;
+}
+
+.alertTxt {
+  color: var(--rejected);
+  margin: -14px 0 18px 140px;
+  font-size: 13px;
+  font-family: 'Gilroy-Regular';
+}
