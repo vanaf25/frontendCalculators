@@ -196,7 +196,7 @@ const App = () => {
           <Route exact path="/calculators/sheetSiding" component={SheetSiding} />
           <Route exact path="/calculators/soffit" component={Soffit} />
           <Route exact path="/calculators/pergolaShade" component={PergolaShade} />
-          <Route exact path="/calculators/friezeBoard" component={FriezeBoard} />
+          <Route exact path="/calculators/freezeBoard" component={FriezeBoard} />
           <Route exact path="/calculators/plankSiding" component={PlankSiding} />
           <Route exact path="/calculators/fascia" component={Fascia}/>
           <Route exact path="/calculators/stuccoWallCovering" component={StuccoWallCovering}/>
