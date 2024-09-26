@@ -1,5 +1,4 @@
 import FormCreator from "../../components/calculations/Form/Form";
-
 const HotTubPad = () => {
   const inputFields = [
     { label: "Wall Length", name: "L", id: "outlined-basic1" },
@@ -12,15 +11,11 @@ const HotTubPad = () => {
     { id: 'SpikeTotalQuantity', value: 0, label: 'Spike Total Quantity' },
     { id: 'GravelFillTotalQuantityCF', value: 0, label: 'Gravel Fill Total Quantity CF' },
     { id: 'GroundClothTotalQuantitySF', value: 0, label: 'Ground Cloth Total Quantity SF' }
-    // Add more result fields as needed
   ];
-
   return (
     <div>
-      <h2>Walls</h2>
       <FormCreator url={"hotTubPad"} result={result} inputFields={inputFields}/>
     </div>
   );
 };
-
 export default HotTubPad;

@@ -23,6 +23,17 @@ import LaticalPanel from "./pages/calculations/LaticalPanel";
 import HomeWrap from "./pages/calculations/HomeWrap";
 import VinylSiding from "./pages/calculations/VinylSiding";
 import Corners from "./pages/calculations/Corners";
+import SheetSiding from "./pages/calculations/SheetSiding";
+import Soffit from "./pages/calculations/Soffit";
+import PergolaShade from "./pages/calculations/PergolaShade";
+import FriezeBoard from "./pages/calculations/FriezeBoard";
+import PlankSiding from "./pages/calculations/PlankSiding";
+import Fascia from "./pages/calculations/Fascia";
+import StuccoWallCovering from "./pages/calculations/StuccoWallCovering";
+import BrickWallCovering from "./pages/calculations/BrickWallCovering";
+import PorchCeiling from "./pages/calculations/PorchCeiling";
+import StairFraming from "./pages/calculations/StairFraming";
+import Fencing from "./pages/calculations/Fencing";
 
 const AdminPage = lazy(() => import(/* webpackChunkName: "AdminPage" */ './pages/AdminPage'));
 
@@ -182,7 +193,18 @@ const App = () => {
           <Route exact path="/calculators/homeWrap" component={HomeWrap} />
           <Route exact path="/calculators/vinylSiding" component={VinylSiding} />
           <Route exact path="/calculators/corners" component={Corners} />
-          <Route exact path="/calculations" component={Calculations} />
+          <Route exact path="/calculators/sheetSiding" component={SheetSiding} />
+          <Route exact path="/calculators/soffit" component={Soffit} />
+          <Route exact path="/calculators/pergolaShade" component={PergolaShade} />
+          <Route exact path="/calculators/friezeBoard" component={FriezeBoard} />
+          <Route exact path="/calculators/plankSiding" component={PlankSiding} />
+          <Route exact path="/calculators/fascia" component={Fascia}/>
+          <Route exact path="/calculators/stuccoWallCovering" component={StuccoWallCovering}/>
+          <Route exact path="/calculators/brickWallCovering" component={BrickWallCovering}/>
+          <Route exact path="/calculators/porchCeiling" component={PorchCeiling}/>
+          <Route exact path="/calculators/starFraming" component={StairFraming}/>
+          <Route exact path="/calculators/fencing" component={Fencing}/>
+          <Route exact path="/calculators" component={Calculations} />
           <Route exact path={"/products"} component={Products}/>
           <Route exact path={'/products/edit/:id'} component={AddProduct}/>
           <Route exact path={'/products/create'} component={AddProduct}/>
