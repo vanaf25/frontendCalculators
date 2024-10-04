@@ -34,10 +34,10 @@ export default function Header() {
         Corporate Manager
       </NavLink>
       <NavLink className={styles.navTxt} to="/calculators">
-        Calculators
+        Calculators1
       </NavLink>
       <NavLink className={styles.navTxt} to="/products">
-        Products
+       Products
       </NavLink>
       {!isLoggedIn ? (
         <NavLink className={classes} to="/sign-in">

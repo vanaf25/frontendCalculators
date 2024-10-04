@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useForm } from "react-hook-form";
-import {Box, Button, Paper, TextField, Typography} from "@mui/material";
+import {Box, Button, MenuItem, Paper, TextField, Typography} from "@mui/material";
 import Card from './../Cards/Card/Card';
+import Select from "react-select";
 
 const FormCreator = ({inputFields,result,url}) => {
-  const { register, handleSubmit } = useForm();
+  const { register,
+    handleSubmit } = useForm();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted,setIsSubmitted]=useState(false)
   const [resultFields,setResultFields]=useState(result)
@@ -38,8 +40,6 @@ const FormCreator = ({inputFields,result,url}) => {
       e.preventDefault();
     }
   };
-
-
   return (
     <>
       <Paper
@@ -54,21 +54,38 @@ const FormCreator = ({inputFields,result,url}) => {
         autoComplete="off"
       >
         <Typography variant={"h5"} sx={{textAlign:"center",mb:1}}>{url}</Typography>
-        {inputFields.map((field, index) => (
-          <TextField
-            key={index}
-            onKeyDown={filterFields}
-            type="number"
-            min="0"
-            sx={{ mb: 1 }}
-            fullWidth
-            {...register(field.name, { valueAsNumber: true, required: true })}
-            id={field.id}
-            label={field.label}
-            variant="outlined"
-          />
-        ))}
+        {inputFields.map((field, index) =>{
+          if (field.type==="select"){
+            console.log('field:',field.options);
+           return  <Select
+              fullWidth
+              sx={{mb:1}}
+              key={index}
+              id="demo-simple-select"
+              {...register(field.name, { valueAsNumber: true, required: true })}
+              label={field.label}
+            >
+             <MenuItem value={2}>2</MenuItem>
+              {field.options.map(option=><MenuItem key={option} value={option}>{option}</MenuItem>)}
+            </Select>
+          }
+          else {
+            return <TextField
+              key={index}
+              onKeyDown={filterFields}
+              type="number"
+              min="0"
+              sx={{ mb: 1 }}
+              fullWidth
+              {...register(field.name, { valueAsNumber: true, required: true })}
+              id={field.id}
+              label={field.label}
+              variant="outlined"
+            />
 
+          }
+                  }
+        )}
         <Box>
           <Button fullWidth disabled={isSubmitting} type="submit" variant="contained">
             {isSubmitting ? "Submitting" : "Submit"}

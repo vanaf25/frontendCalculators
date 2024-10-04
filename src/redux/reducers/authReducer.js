@@ -16,7 +16,6 @@ const initialState = {
   user: null,
   token: localStorage.getItem('token') || '',
 };
-
 export default (state = initialState, action) => {
   switch (action.type) {
     case AUTH_SIGNIN_TRY:

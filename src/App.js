@@ -15,7 +15,6 @@ import PrivateRoute from './components/PrivateRoute';
 import Calculations from './pages/calculations/Calculations';
 import Products from './pages/products/Products';
 import AddProduct from './components/products/AddProduct/AddProduct';
-import SavedCalculations from './components/calculations/Cards/SavedCalculations';
 import Gutters from "./pages/calculations/Gutters";
 import Walls from "./pages/calculations/Walls";
 import HotTubPad from "./pages/calculations/HotTubPad";
@@ -34,6 +33,51 @@ import BrickWallCovering from "./pages/calculations/BrickWallCovering";
 import PorchCeiling from "./pages/calculations/PorchCeiling";
 import StairFraming from "./pages/calculations/StairFraming";
 import Fencing from "./pages/calculations/Fencing";
+import FormLetters from './pages/formLetters/FormLetters';
+import ReleaseAgreement from './pages/formLetters/legal/releaseAgreement';
+import NonDisclosureAgreement from './pages/formLetters/legal/NonDisclureAgreegment';
+import DrugTestNotice from './pages/formLetters/legal/DrugTestConsent';
+import DrugTestConsent from './pages/formLetters/legal/DrugTestConsent';
+import ClaimOfLien from './pages/formLetters/legal/ClaimOfLien';
+import BreachOfNonDisclosure from './pages/formLetters/legal/BreachOfNonDisclosure';
+import BreachOfContract from './pages/formLetters/legal/BreachOfContract';
+import Termination from './pages/formLetters/ProductionPaperWork/Termination';
+import SiteRules from './pages/formLetters/ProductionPaperWork/SiteRules';
+import Notice3 from './pages/formLetters/ProductionPaperWork/Notice3';
+import Notice2 from './pages/formLetters/ProductionPaperWork/Notice2';
+import Notice1 from './pages/formLetters/ProductionPaperWork/Notice1';
+import NewWorkerExpectations from './pages/formLetters/ProductionPaperWork/NewWorkerExpectations';
+import MutualTermination from './pages/formLetters/ProductionPaperWork/MutualTermination';
+import HarshTermination from './pages/formLetters/ProductionPaperWork/HarshTermination';
+import GoldenRules from './pages/formLetters/ProductionPaperWork/GoldenRules';
+import Expectations from './pages/formLetters/ProductionPaperWork/Expectations';
+import OfficeManager from './pages/formLetters/OfficeManager/OfficeManager';
+import ProductionPaperWork from './pages/formLetters/ProductionPaperWork/ProductionPaperWork';
+import BackChargeNotice from './pages/formLetters/salesManager/BackChargeNotice';
+import CommissionStructure from './pages/formLetters/salesManager/ComissionStructure';
+import MissedLead from './pages/formLetters/salesManager/MissedLead';
+import NewClientQuestions from './pages/formLetters/salesManager/newClientQuestions';
+import AdvanceApproval from './pages/formLetters/ProductionPaperWork/AdvanceApproval';
+import AdvanceFormRequest from './pages/formLetters/ProductionPaperWork/AdvanceApproval';
+import Agreement from './pages/formLetters/ProductionPaperWork/Agreement';
+import Ethics from './pages/formLetters/ProductionPaperWork/Ethics';
+import Application from './pages/formLetters/ProductionPaperWork/Application';
+import MissedSalesGoal from './pages/formLetters/salesManager/MissedSalesGoal';
+import AccountingLetter from "./pages/formLetters/accounting/Accounting"
+import LegalLetter from "./pages/formLetters/legal/Legal"
+import SalesLetter from './pages/formLetters/salesManager/SalesManager'
+import Invoice from './pages/formLetters/accounting/Invoice';
+import JobCost from './pages/formLetters/accounting/JobCost';
+import SupplierPurchcaseOrder from './pages/formLetters/accounting/SupplierPurchcaseOrder';
+import Box from '@mui/material/Box';
+import AdditionalWorkOrder from './pages/formLetters/OfficeManager/AdditionalWorkOrder';
+import CompletionCert from './pages/formLetters/OfficeManager/CompletionCert';
+import HighTrafficArea from './pages/formLetters/OfficeManager/HighTrafficArea';
+import LearnWaver from './pages/formLetters/OfficeManager/LearnWaver';
+import PunchOutOf15 from './pages/formLetters/OfficeManager/PunchOutOf15';
+import PunchOutOf60 from './pages/formLetters/OfficeManager/PunchOutOf60';
+import ThankYouLetter from './pages/formLetters/OfficeManager/ThankYouLetter';
+import Waranty from './pages/formLetters/OfficeManager/Waranty';
 
 const AdminPage = lazy(() => import(/* webpackChunkName: "AdminPage" */ './pages/AdminPage'));
 
@@ -168,7 +212,89 @@ const BusinessComponent = lazy(() =>
     /* webpackChunkName: "BusinessComponent" */ './pages/corporateManager/InsureanceDocuments/Business'
   ),
 );
+/*const formLetters=[
+  {
+  main:"accounting",
+  children:["accounting","legal","officeManager","productionPaperWork","salesManager"]
+},
+  {main:"salesManager",children:['BackChargeNotice',
+      'CommissionStructure',
+      'MissedLead',
+      'MissedSalesGoal',
+      'NewClientQuestions']},
+  {main:"productionPaperWork",children:[ 'AdvanceApproval',
+      'AdvanceFormRequest',
+      'Agreement',
+      'Application',
+      'Ethics',
+      'Expectations',
+      'GoldenRules',
+      'HarshTermination',
+      'MutualTermination',
+      'NewWorkerExpectations',
+      'Notice1',
+      'Notice2',
+      'Notice3',
+      'SiteRules',
+      'Termination']},
+  {main:"legal",children: [ 'BreachOfContract',
+      'BreachOfNonDisclosure',
+      'ClaimOfLien',
+      'DrugTestConsent',
+      'DrugTestNotice',
+      'NonDisclosureAgreement',
+      'ReleaseAgreement']}
+]*/
+let routes = [
+  { path: "/accounting", component: AccountingLetter },
+  {path:'/accounting/Invoice',component:Invoice},
+  {path:'/accounting/JobCost',component:JobCost},
+  {path:'/accounting/SupplierPurchaseOrder',component:SupplierPurchcaseOrder},
+  { path: "/legal", component: LegalLetter },
 
+  { path: "/officeManager", component: OfficeManager },
+  { path: "/officeManager/AdditionalWorkOrder", component: AdditionalWorkOrder },
+  { path: "/officeManager/CompletionCert", component: CompletionCert },
+  { path: "/officeManager/HighTrafficArea", component: HighTrafficArea },
+  { path: "/officeManager/LearnWaver", component: LearnWaver },
+  { path: "/officeManager/PunchOutOf15", component: PunchOutOf15 },
+  { path: "/officeManager/PunchOutOf60", component: PunchOutOf60 },
+  { path: "/officeManager/ThankYouLetter", component: ThankYouLetter },
+  { path: "/officeManager/Warranty", component: Waranty },
+  { path: "/productionPaperWork", component: ProductionPaperWork },
+  { path: "/salesManager", component: SalesLetter },
+  { path: "/salesManager/BackChargeNotice", component: BackChargeNotice },
+  { path: "/salesManager/CommissionStructure", component: CommissionStructure },
+  { path: "/salesManager/MissedLead", component: MissedLead },
+  { path: "/salesManager/MissedSalesGoal", component: MissedSalesGoal },
+  { path: "/salesManager/NewClientQuestions", component: NewClientQuestions },
+  { path: "/productionPaperWork/AdvanceApproval", component: AdvanceApproval },
+  { path: "/productionPaperWork/AdvanceFormRequest", component: AdvanceFormRequest },
+  { path: "/productionPaperWork/Agreement", component: Agreement },
+  { path: "/productionPaperWork/Application", component: Application },
+  { path: "/productionPaperWork/Ethics", component: Ethics },
+  { path: "/productionPaperWork/Expectations", component: Expectations },
+  { path: "/productionPaperWork/GoldenRules", component: GoldenRules },
+  { path: "/productionPaperWork/HarshTermination", component: HarshTermination },
+  { path: "/productionPaperWork/MutualTermination", component: MutualTermination },
+  { path: "/productionPaperWork/NewWorkerExpectations", component: NewWorkerExpectations },
+  { path: "/productionPaperWork/Notice1", component: Notice1 },
+  { path: "/productionPaperWork/Notice2", component: Notice2 },
+  { path: "/productionPaperWork/Notice3", component: Notice3 },
+  { path: "/productionPaperWork/SiteRules", component: SiteRules },
+  { path: "/productionPaperWork/Termination", component: Termination },
+  { path: "/legal/BreachOfContract", component: BreachOfContract },
+  { path: "/legal/BreachOfNonDisclosure", component: BreachOfNonDisclosure },
+  { path: "/legal/ClaimOfLien", component: ClaimOfLien },
+  { path: "/legal/DrugTestConsent", component: DrugTestConsent },
+  { path: "/legal/DrugTestNotice", component: DrugTestNotice },
+  { path: "/legal/NonDisclosureAgreement", component: NonDisclosureAgreement },
+  { path: "/legal/ReleaseAgreement", component: ReleaseAgreement },
+]
+ routes = routes.map(route => ({
+  ...route,
+  path: `/formLetters${route.path}`, // Append "formLetters" to the path
+}));
 const App = () => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -196,7 +322,7 @@ const App = () => {
           <Route exact path="/calculators/sheetSiding" component={SheetSiding} />
           <Route exact path="/calculators/soffit" component={Soffit} />
           <Route exact path="/calculators/pergolaShade" component={PergolaShade} />
-          <Route exact path="/calculators/freezeBoard" component={FriezeBoard} />
+          <Route exact path="/calculators/friezeBoard" component={FriezeBoard} />
           <Route exact path="/calculators/plankSiding" component={PlankSiding} />
           <Route exact path="/calculators/fascia" component={Fascia}/>
           <Route exact path="/calculators/stuccoWallCovering" component={StuccoWallCovering}/>
@@ -208,7 +334,13 @@ const App = () => {
           <Route exact path={"/products"} component={Products}/>
           <Route exact path={'/products/edit/:id'} component={AddProduct}/>
           <Route exact path={'/products/create'} component={AddProduct}/>
-          <Route exact path={'/savedCalculations'} component={SavedCalculations}/>
+          <Route exact path="/formLetters" component={FormLetters}/>
+          {routes.map((route,index)=><Route key={index}
+                                            path={route.path} exact
+                                            render={()=><Box sx={{maxWidth:900,margin:"10px auto"}}>
+                                              <route.component/></Box>}
+                                             />
+          )}
           <Route exact path="/sign-up" component={SignUp} />
           <Route exact path="/sign-in" component={SignIn} />
 
