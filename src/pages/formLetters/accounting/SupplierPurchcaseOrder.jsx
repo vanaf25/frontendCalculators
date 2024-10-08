@@ -1,17 +1,19 @@
 import EstimatorDetails from '../../../components/global/EstimatorDetails/EstimatorDetails';
 import CustomerDetails from '../../../components/global/CustomerDetails/CustomerDetails';
 import Table from '../../../components/letters/Table/Table';
-import { Typography } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import TableWithOutHeaders from '../../../components/letters/TableWithoutHeaders/TableWithOutHeaders';
+import BlueBlock from '../../../components/global/blueBlock/BlueBlock';
+import BorderedCell from '../../../components/letters/BorderedCell/BorderedCell';
 
 const SupplierPurchcaseOrder = () => {
   const columns = [
-    { id: 'product', label: 'Product #' },
-    { id: 'qty', label: 'Qty' },
-    { id: 'description', label: 'Description' },
-    { id: 'unitPrice', label: 'Unit Price' },
-    { id: 'amount', label: 'Amount' }
+    { field: 'product', headerName: 'Product #',editable:true },
+    { field: 'qty', headerName: 'Qty',editable:true },
+    { field: 'description', headerName: 'Description',editable:true,flex:2 },
+    { field: 'unitPrice', headerName: 'Unit Price',editable:true, },
+    { field: 'amount', headerName: 'Amount',editable:true }
   ];
   const rows = [
     {
@@ -55,34 +57,60 @@ const SupplierPurchcaseOrder = () => {
     { field: 'Contact #', value: '0' },
     { field: 'Address', value: '0' }
   ];
-
-
   return (
     <Box sx={{maxWidth:1000,margin:"0 auto"}}>
       <EstimatorDetails estimatorDetails={{signee:"Ivan",email:"vanay@gmail.com",phone:"0990930450"}}/>
       <CustomerDetails customer={{name:"Ivan",email:"vanay@gmail.com",phone:"0990930450",adress:"Adress of custoer"}}/>
       <Box sx={{mb:1,display:"flex",justifyContent:"space-between"}}>
         <TableWithOutHeaders rows={rows2} sx={{width:300}}/>
-        <Box>
-          <TableWithOutHeaders  rows={[
-            {field: "Purchase From",value: ""},
-            { field: 'Supplier name', value: '0' },
-            { field: 'Address', value: '0' }
-          ]} sx={{width:300}}/>
+        <Box sx={{ width: 300 }}>
+          <Grid container spacing={0}>
+            <Grid item xs={5}>
+              <BorderedCell><Typography>Purchase From</Typography></BorderedCell>
+            </Grid>
+            <Grid container item xs={12}>
+              <Grid item xs={5}>
+                <BorderedCell><Typography>Supplier name</Typography> </BorderedCell>
+              </Grid>
+              <Grid item xs={7}>
+                <BorderedCell>
+                  <BlueBlock />
+                </BorderedCell>
+              </Grid>
+            </Grid>
+
+            <Grid container item xs={12}>
+              <Grid item xs={5}>
+                <BorderedCell><Typography>Address</Typography></BorderedCell>
+              </Grid>
+              <Grid item xs={7}>
+                <BorderedCell>
+                  <BlueBlock />
+                </BorderedCell>
+              </Grid>
+            </Grid>
+          </Grid>
         </Box>
       </Box>
       <Box sx={{mb:1,display:"flex",justifyContent:"space-between"}}>
         <Box sx={{display:"flex",alignItems:"center"}}>
-          <Typography>SP.O. #:</Typography>
-          <Typography sx={{background:"lightBlue",p:1}}>Sales Person:</Typography>
+          <Box sx={{alignSelf:"center",mt:1}}>
+            <Typography  sx={{mr:1}}>Sales Person: </Typography>
+          </Box>
+          <BlueBlock/>
         </Box>
         <Box sx={{display:"flex",alignItems:"center"}}>
-          <Typography>SP.O. #:</Typography>
-          <Typography sx={{background:"lightBlue",p:1}}>Sales Person:</Typography>
+          <Box sx={{alignSelf:"center",mt:1}}>
+            <Typography  sx={{mr:1}}>P.O. #
+              : </Typography>
+          </Box>
+          <BlueBlock/>
         </Box>
         <Box sx={{display:"flex",alignItems:"center"}}>
-          <Typography>SP.O. #:</Typography>
-          <Typography sx={{background:"lightBlue",p:1}}>Sales Person:</Typography>
+          <Box sx={{alignSelf:"center",mt:1}}>
+            <Typography  sx={{mr:1}}>Date: </Typography>
+          </Box>
+          <BlueBlock/>
         </Box>
       </Box>
       <Table columns={columns} rows={rows}/>

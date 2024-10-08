@@ -265,7 +265,6 @@ let routes = [
   { path: "/salesManager", component: SalesLetter },
   { path: "/salesManager/BackChargeNotice", component: BackChargeNotice },
   { path: "/salesManager/CommissionStructure", component: CommissionStructure },
-
   { path: "/salesManager/MissedLead", component: MissedLead },
   { path: "/salesManager/MissedSalesGoal", component: MissedSalesGoal },
   { path: "/salesManager/NewClientQuestions", component: NewClientQuestions },

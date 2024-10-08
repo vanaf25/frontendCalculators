@@ -1,316 +1,435 @@
-import Table from '../../../components/letters/Table/Table';
+import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
 import Box from '@mui/material/Box';
+import Table from '../../../components/letters/Table/Table';
 import TableWithOutHeaders from '../../../components/letters/TableWithoutHeaders/TableWithOutHeaders';
+import calculateSeriesOfNumbers from '../../../utils/calculateSeriesOfNumbers';
+import calculateTotalAmount from '../../../utils/calculateTotalAmount';
+import InvoiceHeader from './InvoiceHeader';
+
+const totalKeys = ["amount", "totalPay", "totalCost"];
 
 const JobCost = () => {
+  const firstTableRef = useRef(null);
+  const laborTableRef = useRef(null);
+  const fullBidSubTableRef = useRef(null);
+  const totalPaymentsTableRef = useRef(null);
+  const totalTableRef = useRef(null);
+
+  const [result, setResult] = useState({ income: 0, expense: 0, balance: 0, projectTaxes: 0 });
+
+  const updateTotalTable = useCallback((ref, key, totalKey) => {
+    console.log('upd!');
+    const amount = calculateTotalAmount(ref, key);
+    const expense = calculateTotalAmount(laborTableRef, "totalPay") +
+      calculateTotalAmount(firstTableRef, "amount") +
+      calculateTotalAmount(fullBidSubTableRef, "totalCost");
+    const income = calculateTotalAmount(totalPaymentsTableRef, "total");
+    const balance = income - expense;
+    const projectTaxes = Math.round((balance * 2) * 100) / 100;
+    setResult({ expense, income, balance, projectTaxes });
+
+    let firstRowNode = totalTableRef?.current?.api?.getDisplayedRowAtIndex(0);
+    if (firstRowNode) firstRowNode.setDataValue(totalKey, amount);
+  }, []);
+
+  const updateSupplies = useCallback(() => {
+    updateTotalTable(firstTableRef, "amount", "supplies");
+  }, [updateTotalTable,totalTableRef.current]);
+
+  const updateFullBidSub = useCallback(() => {
+    updateTotalTable(fullBidSubTableRef, "totalCost", "fullBidSub");
+  }, [updateTotalTable,totalTableRef.current]);
+
+  const updateTotalPayments = useCallback(() => {
+    updateTotalTable(totalPaymentsTableRef, "total", "totalPayments");
+  }, [updateTotalTable,totalTableRef.current]);
+
+  const updateLaborSub = useCallback(() => {
+    updateTotalTable(laborTableRef, "totalPay", "laborSub");
+  }, [updateTotalTable,totalTableRef.current]);
+
+  useEffect(() => {
+    updateSupplies();
+  }, [updateSupplies]);
+
+  useEffect(() => {
+    updateFullBidSub();
+  }, [updateFullBidSub]);
+
+  useEffect(() => {
+    updateTotalPayments();
+  }, [updateTotalPayments]);
+
+  useEffect(() => {
+    updateLaborSub();
+  }, [updateLaborSub]);
+  const onCellValueChanged = useCallback((params) => {
+    console.log('paramsL', params);
+    const newValue = params.newValue;
+    const oldValue = params.oldValue;
+    if (newValue <= 0) {
+      console.log('lessThen 0');
+      params.api.getRowNode(params.node.id).setDataValue(params.column.colId, oldValue);
+    } else {
+      console.log('more than 0');
+      params.api.getRowNode(params.node.id).setDataValue(params.column.colId, newValue);
+      updateSupplies();
+      updateFullBidSub();
+      updateTotalPayments();
+      updateLaborSub();
+      console.log('totalKeys', totalKeys);
+    }
+  }, [updateSupplies, updateFullBidSub, updateTotalPayments, updateLaborSub]);
+
+  // Мемоизация колонок и строк для каждой таблицы
+  const firstTableColumns = useMemo(() => [
+    { field: 'supplierName', editable: true, headerName: 'Supplier Name' },
+    { field: 'description', editable: true, headerName: 'Description of Material Used' },
+    { field: 'date', cellDataType: "date",
+      valueFormatter: (params) => {
+        const date = new Date(params.value);
+        return date.toLocaleDateString(); // Форматирование даты
+      },
+      editable: true, headerName: 'Date' },
+    { field: 'checkNumber', editable: true, headerName: 'Check #' },
+    { field: 'amount', cellDataType: "number", editable: true,
+      cellEditor: 'agNumberCellEditor', headerName: 'Amount',
+      valueFormatter: (params) => parseFloat(params.value).toFixed(2) // Округление до двух знаков
+    }
+  ], []);
+
+  const firstTableRows = useMemo(() => [
+    {
+      "supplierName": "ABC Supplies",
+      "description": "Wood planks for construction",
+      "date": "2024-09-30",
+      "checkNumber": "12345",
+      "amount": 1500
+    },
+    {
+      "supplierName": "ABC Supplies",
+      "description": "Wood planks for construction",
+      "date": "2024-09-30",
+      "checkNumber": "12345",
+      "amount": 1500
+    },
+    {
+      "supplierName": "ABC Supplies",
+      "description": "Wood planks for construction",
+      "date": "2024-09-30",
+      "checkNumber": "12345",
+      "amount": 1500
+    },
+    // Остальные строки...
+  ], []);
+
+  // Аналогично мемоизируйте колонки и строки для остальных таблиц
+  const laborTableColumns = useMemo(() => [
+    { field: 'subcontractLaborName', editable: true, headerName: 'Subcontract Labor Name' },
+    { field: 'rate', editable: true, cellEditor: 'agNumberCellEditor', headerName: 'Rate' },
+    { field: 'week1', editable: true, cellEditor: 'agNumberCellEditor', headerName: 'Week 1' },
+    { field: 'week2', editable: true, cellEditor: 'agNumberCellEditor', headerName: 'Week 2' },
+    { field: 'week3', editable: true, cellEditor: 'agNumberCellEditor', headerName: 'Week 3' },
+    { field: 'week4', editable: true, cellEditor: 'agNumberCellEditor', headerName: 'Week 4' },
+    { field: 'week5', editable: true, cellEditor: 'agNumberCellEditor', headerName: 'Week 5' },
+    { field: 'week6', editable: true, cellEditor: 'agNumberCellEditor', headerName: 'Week 6' },
+    { field: 'totalHours', valueGetter: (p) => calculateSeriesOfNumbers(p, "week", 6),
+      headerName: 'Total Hours' },
+    { field: 'totalPay', valueGetter: (p) => {
+        const total = p.getValue('totalHours');
+        if (total !== null && p.data.rate !== null) {
+          return parseFloat((+total) * (+p.data.rate)).toFixed(2);
+        }
+        return "-";
+      }, headerName: 'Total Pay',
+      valueFormatter: (params) => params.value !== "-" ? `$${params.value}` : params.value
+    }
+  ], []);
+
+  const laborTableRows = useMemo(() => [
+    {
+      "subcontractLaborName": "John Doe",
+      "rate": 25.00,
+      "week1": 40,
+      "week2": 38,
+      "week3": 42,
+      "week4": 36,
+      "week5": 40,
+      "week6": 38,
+      "totalPay": "-"
+    },
+    {
+      "subcontractLaborName": "John Doe",
+      "rate": 25.00,
+      "week1": 40,
+      "week2": 38,
+      "week3": 42,
+      "week4": 36,
+      "week5": 40,
+      "week6": 38,
+      "totalPay": "-"
+    },
+    {
+      "subcontractLaborName": "John Doe",
+      "rate": 25.00,
+      "week1": 40,
+      "week2": 38,
+      "week3": 42,
+      "week4": 36,
+      "week5": 40,
+      "week6": 38,
+      "totalPay": "-"
+    },
+    {
+      "subcontractLaborName": "John Doe",
+      "rate": 25.00,
+      "week1": 40,
+      "week2": 38,
+      "week3": 42,
+      "week4": 36,
+      "week5": 40,
+      "week6": 38,
+      "totalPay": "-"
+    },
+    // Остальные строки...
+  ], []);
+
+  const fullBidSubTableColumns = useMemo(() => [
+    { field: 'subcontractorName', headerName: 'Full Bid Subcontractor Name' },
+    { field: 'deposit', headerName: 'Deposit' },
+    { field: 'payment1', editable: true, headerName: 'Payment 1' },
+    { field: 'payment2', editable: true, headerName: 'Payment 2' },
+    { field: 'payment3', editable: true, headerName: 'Payment 3' },
+    { field: 'payment4', editable: true, headerName: 'Payment 4' },
+    { field: 'payment5', editable: true, headerName: 'Payment 5' },
+    { field: 'totalSiteHours', editable: true, headerName: 'Total Site Hours' },
+    { field: 'totalCost', headerName: 'Total Cost',
+      valueGetter: (p) => {
+        const payments = calculateSeriesOfNumbers(p, "payment", 5);
+        if (payments !== "-" && p.data.deposit) {
+          return parseFloat(payments + (+p.data.deposit)).toFixed(2);
+        }
+        return "-";
+      },
+      valueFormatter: (params) => params.value !== "-" ? `$${params.value}` : params.value
+    }
+  ], []);
+
+  const fullBidSubTableRows = useMemo(() => [
+    {
+      "subcontractorName": "ABC Construction",
+      "deposit": 5000,
+      "payment1": 3000,
+      "payment2": 4000,
+      "payment3": 2500,
+      "payment4": 2000,
+      "payment5": 1500
+    },
+    {
+      "subcontractorName": "ABC Construction",
+      "deposit": 5000,
+      "payment1": 3000,
+      "payment2": 4000,
+      "payment3": 2500,
+      "payment4": 2000,
+      "payment5": 1500
+    },
+    // Остальные строки...
+  ], []);
+
+  const totalPaymentsTableColumns = useMemo(() => [
+    { field: 'paymentsReceived', editable: true, headerName: 'Payments Received' },
+    { field: 'payment1', cellDataType: "number", editable: true, cellEditor: 'agNumberCellEditor',
+      headerName: 'Payment 1' },
+    { field: 'payment1Date', cellDataType: "date",
+      valueFormatter: (params) => {
+        const date = new Date(params.value);
+        return date.toLocaleDateString(); // Форматирование даты
+      }, editable: true, headerName: 'Date' },
+    { field: 'payment2', editable: true, cellEditor: 'agNumberCellEditor', headerName: 'Payment 2' },
+    { field: 'payment2Date', cellDataType: "date",
+      editable: true, headerName: 'Date',
+      valueFormatter: (params) => {
+        const date = new Date(params.value);
+        return date.toLocaleDateString(); // Форматирование даты
+      }
+    },
+    { field: 'payment3', editable: true, cellEditor: 'agNumberCellEditor', headerName: 'Payment 3' },
+    { field: 'payment3Date',
+      valueFormatter: (params) => {
+        const date = new Date(params.value);
+        return date.toLocaleDateString(); // Форматирование даты
+      },
+      cellDataType: "date", editable: true, headerName: 'Date' },
+    { field: 'payment4', editable: true, cellEditor: 'agNumberCellEditor', headerName: 'Payment 4' },
+    { field: 'payment4Date',
+      valueFormatter: (params) => {
+        const date = new Date(params.value);
+        return date.toLocaleDateString(); // Форматирование даты
+      },
+      editable: true, cellDataType: "date", headerName: 'Date' },
+    { field: 'total', valueGetter: (p) => calculateSeriesOfNumbers(p, "payment", 4),
+      headerName: 'Total',
+      valueFormatter: (params) => params.value !== "-" ? `$${params.value}` : params.value
+    }
+  ], []);
+
+  const totalPaymentsTableRows = useMemo(
+    () => [
+      {
+        "paymentsReceived": "Contract payments",
+        "payment1": 5000,
+        "payment1Date": "2024-09-01",
+        "payment2": 3000,
+        "payment2Date": "2024-09-30",
+        "payment3": 2500,
+        "payment3Date": "2024-09-20",
+        "payment4": 2000,
+        "payment4Date": "2024-09-25"
+      },
+      {
+        "paymentsReceived": "Change Order 1",
+        "payment1": 4000,
+        "payment1Date": "2024-10-01",
+        "payment2": 2500,
+        "payment2Date": "2024-10-15",
+        "payment3": 3000,
+        "payment3Date": "2024-10-30",
+        "payment4": 3500,
+        "payment4Date": "2024-11-05"
+      },
+      {
+        "paymentsReceived": "Change Order 2",
+        "payment1": 6000,
+        "payment1Date": "2024-10-05",
+        "payment2": 4500,
+        "payment2Date": "2024-10-20",
+        "payment3": 3200,
+        "payment3Date": "2024-11-01",
+        "payment4": 4000,
+        "payment4Date": "2024-11-15"
+      },
+      {
+        "paymentsReceived": "Change Order 3",
+        "payment1": 3500,
+        "payment1Date": "2024-09-10",
+        "payment2": 1500,
+        "payment2Date": "2024-09-30",
+        "payment3": 500,
+        "payment3Date": "2024-10-05",
+        "payment4": 2000,
+        "payment4Date": "2024-10-15"
+      },
+      {
+        "paymentsReceived": "Change Order 4",
+        "payment1": 3500,
+        "payment1Date": "2024-09-10",
+        "payment2": 1500,
+        "payment2Date": "2024-09-30",
+        "payment3": 500,
+        "payment3Date": "2024-10-05",
+        "payment4": 2000,
+        "payment4Date": "2024-10-15"
+      },
+      {
+        "paymentsReceived": "Change Order 5",
+        "payment1": 3500,
+        "payment1Date": "2024-09-10",
+        "payment2": 1500,
+        "payment2Date": "2024-09-30",
+        "payment3": 500,
+        "payment3Date": "2024-10-05",
+        "payment4": 2000,
+        "payment4Date": "2024-10-15"
+      },
+      {
+        "paymentsReceived": "Change Order 6",
+        "payment1": 3500,
+        "payment1Date": "2024-09-10",
+        "payment2": 1500,
+        "payment2Date": "2024-09-30",
+        "payment3": 500,
+        "payment3Date": "2024-10-05",
+        "payment4": 2000,
+        "payment4Date": "2024-10-15"
+      },
+    ]
+    , []);
+
+  const totalTableColumns = useMemo(() => [
+    { field: 'total', headerName: '' },
+    { field: 'supplies', headerName: 'Supplies' },
+    { field: 'laborSub', headerName: 'Labor Sub' },
+    { field: 'fullBidSub', headerName: 'Full Bid Sub' },
+    { field: 'totalPayments', headerName: 'Total Payments' }
+  ], []);
+
+  const totalTableRows = useMemo(() => [{
+    supplies: 0,
+    total: "Total",
+    laborSub: 0,
+    fullBidSub: 0,
+    totalPayments: 0
+  }], []);
+
+  // Мемоизация столбцов и строк для TableWithOutHeaders
+  const summaryTableRows = useMemo(() => [
+    { field: "Income", value: `$${result.income}` },
+    { field: "Expense", value: `$${result.expense}` },
+    { field: "Balance", value: `$${result.balance}` }
+  ], [result]);
+
+  const taxesTableRows = useMemo(() => [
+    { field: "Projected Taxes", value: `$${result.projectTaxes}` }
+  ], [result]);
 
   return (
-    <Box sx={{maxWidth:900,margin:"0 auto"}}>
-    <Table columns={[
-      { id: 'supplierName', label: 'Supplier Name' },
-      { id: 'description', label: 'Description of Material Used' },
-      { id: 'date', label: 'Date' },
-      { id: 'checkNumber', label: 'Check #' },
-      { id: 'amount', label: 'Amount' }
-    ]}
-           rows={[
-             {
-               supplierName: 'ABC Supplies',
-               description: 'Wood planks for construction',
-               date: '2024-09-30',
-               checkNumber: '12345',
-               amount: '$1,500.00'
-             },
-             {
-               supplierName: 'XYZ Materials',
-               description: 'Steel beams',
-               date: '2024-09-25',
-               checkNumber: '98765',
-               amount: '$3,200.00'
-             },
-             {
-               supplierName: 'LMN Concrete',
-               description: 'Concrete mix',
-               date: '2024-09-20',
-               checkNumber: '54321',
-               amount: '$2,800.00'
-             },
-             {
-               supplierName: 'OPQ Paints',
-               description: 'Exterior paint',
-               date: '2024-09-15',
-               checkNumber: '11122',
-               amount: '$1,000.00'
-             },
-             {
-               supplierName: 'RST Roofing',
-               description: 'Roofing shingles',
-               date: '2024-09-10',
-               checkNumber: '22233',
-               amount: '$5,400.00'
-             }
-           ]}
-    />
-      <Table rows={[
-        {
-          subcontractLaborName: 'John Doe',
-          rate: '$25.00',
-          week1: 40,
-          week2: 38,
-          week3: 42,
-          week4: 36,
-          week5: 40,
-          week6: 38,
-          totalHours: 234,
-          totalPay: '$5,850.00'
-        },
-        {
-          subcontractLaborName: 'Jane Smith',
-          rate: '$30.00',
-          week1: 35,
-          week2: 40,
-          week3: 36,
-          week4: 42,
-          week5: 38,
-          week6: 39,
-          totalHours: 230,
-          totalPay: '$6,900.00'
-        },
-        {
-          subcontractLaborName: 'Mike Johnson',
-          rate: '$28.00',
-          week1: 38,
-          week2: 36,
-          week3: 40,
-          week4: 34,
-          week5: 39,
-          week6: 41,
-          totalHours: 228,
-          totalPay: '$6,384.00'
-        },
-        {
-          subcontractLaborName: 'Emily Davis',
-          rate: '$32.00',
-          week1: 40,
-          week2: 45,
-          week3: 38,
-          week4: 37,
-          week5: 41,
-          week6: 44,
-          totalHours: 245,
-          totalPay: '$7,840.00'
-        },
-        {
-          subcontractLaborName: 'David Brown',
-          rate: '$26.00',
-          week1: 30,
-          week2: 32,
-          week3: 34,
-          week4: 36,
-          week5: 38,
-          week6: 40,
-          totalHours: 210,
-          totalPay: '$5,460.00'
-        }
-      ]} columns={[
-        { id: 'subcontractLaborName', label: 'Subcontract Labor Name' },
-        { id: 'rate', label: 'Rate' },
-        { id: 'week1', label: 'Week 1' },
-        { id: 'week2', label: 'Week 2' },
-        { id: 'week3', label: 'Week 3' },
-        { id: 'week4', label: 'Week 4' },
-        { id: 'week5', label: 'Week 5' },
-        { id: 'week6', label: 'Week 6' },
-        { id: 'totalHours', label: 'Total Hours' },
-        { id: 'totalPay', label: 'Total Pay' }
-      ]}/>
-      <Table columns={[
-        { id: 'subcontractorName', label: 'Full Bid Subcontractor Name' },
-        { id: 'deposit', label: 'Deposit' },
-        { id: 'payment1', label: 'Payment 1' },
-        { id: 'payment2', label: 'Payment 2' },
-        { id: 'payment3', label: 'Payment 3' },
-        { id: 'payment4', label: 'Payment 4' },
-        { id: 'payment5', label: 'Payment 5' },
-        { id: 'totalSiteHours', label: 'Total Site Hours' },
-        { id: 'totalCost', label: 'Total Cost' }
-      ]} rows={[
-        {
-          subcontractorName: 'ABC Construction',
-          deposit: '$5,000.00',
-          payment1: '$3,000.00',
-          payment2: '$4,000.00',
-          payment3: '$2,500.00',
-          payment4: '$2,000.00',
-          payment5: '$1,500.00',
-          totalSiteHours: 160,
-          totalCost: '$18,000.00'
-        },
-        {
-          subcontractorName: 'XYZ Renovations',
-          deposit: '$4,500.00',
-          payment1: '$2,500.00',
-          payment2: '$3,500.00',
-          payment3: '$1,800.00',
-          payment4: '$2,200.00',
-          payment5: '$1,700.00',
-          totalSiteHours: 150,
-          totalCost: '$16,200.00'
-        },
-        {
-          subcontractorName: 'LMN Services',
-          deposit: '$6,000.00',
-          payment1: '$4,000.00',
-          payment2: '$3,000.00',
-          payment3: '$2,000.00',
-          payment4: '$2,500.00',
-          payment5: '$1,000.00',
-          totalSiteHours: 180,
-          totalCost: '$18,500.00'
-        },
-        {
-          subcontractorName: 'OPQ Contractors',
-          deposit: '$3,500.00',
-          payment1: '$2,800.00',
-          payment2: '$3,200.00',
-          payment3: '$2,200.00',
-          payment4: '$2,500.00',
-          payment5: '$1,800.00',
-          totalSiteHours: 140,
-          totalCost: '$16,000.00'
-        },
-        {
-          subcontractorName: 'RST Developments',
-          deposit: '$4,200.00',
-          payment1: '$3,500.00',
-          payment2: '$2,000.00',
-          payment3: '$1,700.00',
-          payment4: '$2,300.00',
-          payment5: '$1,500.00',
-          totalSiteHours: 170,
-          totalCost: '$15,200.00'
-        }
-      ]}/>
-      <Table columns={ [
-        { id: 'paymentsReceived', label: 'Payments Received' },
-        { id: 'payment1', label: 'Payment 1' },
-        { id: 'payment1Date', label: 'Date' },
-        { id: 'payment2', label: 'Payment 2' },
-        { id: 'payment2Date', label: 'Date' },
-        { id: 'payment3', label: 'Payment 3' },
-        { id: 'payment3Date', label: 'Date' },
-        { id: 'payment4', label: 'Payment 4' },
-        { id: 'payment4Date', label: 'Date' },
-        { id: 'total', label: 'Total' }
-      ]} rows={[
-        {
-          paymentsReceived: 'Contract payments',
-          payment1: '$5,000.00',
-          payment1Date: '2024-09-01',
-          payment2: '$3,000.00',
-          payment2Date: '2024-09-15',
-          payment3: '$2,500.00',
-          payment3Date: '2024-09-20',
-          payment4: '$2,000.00',
-          payment4Date: '2024-09-25',
-          total: '$12,500.00'
-        },
-        {
-          paymentsReceived: 'Change Order 1',
-          payment1: '$1,500.00',
-          payment1Date: '2024-09-02',
-          payment2: '$2,000.00',
-          payment2Date: '2024-09-10',
-          payment3: '$2,500.00',
-          payment3Date: '2024-09-18',
-          payment4: '$1,000.00',
-          payment4Date: '2024-09-22',
-          total: '$7,000.00'
-        },
-        {
-          paymentsReceived: 'Change Order 2',
-          payment1: '$1,200.00',
-          payment1Date: '2024-09-05',
-          payment2: '$1,800.00',
-          payment2Date: '2024-09-12',
-          payment3: '$1,500.00',
-          payment3Date: '2024-09-16',
-          payment4: '$1,100.00',
-          payment4Date: '2024-09-21',
-          total: '$5,600.00'
-        },
-        {
-          paymentsReceived: 'Change Order 3',
-          payment1: '$2,000.00',
-          payment1Date: '2024-09-03',
-          payment2: '$1,500.00',
-          payment2Date: '2024-09-09',
-          payment3: '$2,000.00',
-          payment3Date: '2024-09-14',
-          payment4: '$1,500.00',
-          payment4Date: '2024-09-19',
-          total: '$7,000.00'
-        },
-        {
-          paymentsReceived: 'Change Order 4',
-          payment1: '$1,000.00',
-          payment1Date: '2024-09-06',
-          payment2: '$1,000.00',
-          payment2Date: '2024-09-11',
-          payment3: '$1,500.00',
-          payment3Date: '2024-09-17',
-          payment4: '$1,200.00',
-          payment4Date: '2024-09-23',
-          total: '$4,700.00'
-        },
-        {
-          paymentsReceived: 'Change Order 5',
-          payment1: '$1,800.00',
-          payment1Date: '2024-09-04',
-          payment2: '$2,200.00',
-          payment2Date: '2024-09-08',
-          payment3: '$2,500.00',
-          payment3Date: '2024-09-15',
-          payment4: '$2,100.00',
-          payment4Date: '2024-09-25',
-          total: '$8,600.00'
-        },
-        {
-          paymentsReceived: 'Change Order 6',
-          payment1: '$1,500.00',
-          payment1Date: '2024-09-07',
-          payment2: '$1,000.00',
-          payment2Date: '2024-09-13',
-          payment3: '$1,500.00',
-          payment3Date: '2024-09-18',
-          payment4: '$1,200.00',
-          payment4Date: '2024-09-24',
-          total: '$5,200.00'
-        }
-      ]}/>
-      <Table columns={[
-        {id:"total",label:""},
-        { id: 'supplies', label: 'Supplies' },
-        { id: 'laborSub', label: 'Labor Sub' },
-        { id: 'fullBidSub', label: 'Full Bid Sub' },
-        { id: 'totalPayments', label: 'Total Payments' }
-      ]} rows={[{supplies: '$1,500.00',
-        total:"Total",
-        laborSub: '$2,000.00',
-        fullBidSub: '$5,000.00',
-        totalPayments: '$8,500.00'}]}/>
-      <Box sx={{display:"flex"}}>
-        <TableWithOutHeaders sx={{width:300,mr:1}} rows={[{field:"Income",value:`1500$`}
-          ,{field:"Exspense",value:`1500$`},
-          {field:"Balance",value:`1500$`}
-        ]} />
+    <Box sx={{ maxWidth: 900, margin: "0 auto" }}>
+      <InvoiceHeader/>
+      <Table
+        columns={firstTableColumns}
+        rows={firstTableRows}
+        customRef={firstTableRef}
+        onCellValueChanged={onCellValueChanged}
+      />
+      <Table
+        onCellValueChanged={onCellValueChanged}
+        rows={laborTableRows}
+        columns={laborTableColumns}
+        customRef={laborTableRef}
+      />
+      <Table
+        onCellValueChanged={onCellValueChanged}
+        columns={fullBidSubTableColumns}
+        customRef={fullBidSubTableRef}
+        rows={fullBidSubTableRows}
+      />
+      <Table
+        onCellValueChanged={onCellValueChanged}
+        customRef={totalPaymentsTableRef}
+        columns={totalPaymentsTableColumns}
+        rows={totalPaymentsTableRows}
+      />
+      <Table
+        columns={totalTableColumns}
+        customRef={totalTableRef}
+        rows={totalTableRows}
+        onCellValueChanged={onCellValueChanged}
+      />
+      <Box sx={{ display: "flex" }}>
+        <TableWithOutHeaders
+          sx={{ width: 300, mr: 1 }}
+          rows={summaryTableRows}
+        />
         <Box>
-          <TableWithOutHeaders rows={[{field:"Projected Taxes",value:`1500$`}
-          ]} />
+          <TableWithOutHeaders
+            rows={taxesTableRows}
+          />
         </Box>
       </Box>
     </Box>
   );
 };
+
 
 export default JobCost;

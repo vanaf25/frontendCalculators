@@ -4,6 +4,7 @@ import { Paper, Typography } from '@mui/material';
 import Table from '../../../components/letters/Table/Table';
 import Box from '@mui/material/Box';
 import TableWithOutHeaders from '../../../components/letters/TableWithoutHeaders/TableWithOutHeaders';
+import filterPositiveNumbers from '../../../utils/filterPositiveNumbers';
 
 const Invoice = () => {
   const sentences = [
@@ -19,14 +20,38 @@ const Invoice = () => {
       <CustomerDetails customer={{name:"Ivan",
         email:"vanay@gmail.com",phone:"0990930450",address:"Adress of custoer"}}/>
       <Table
-        rows={[{dateSold:"29.09.2005",p:"2442",dateBalance:"2422"}]}
-        columns={[{id:"dateSold",label:"Date Sold"}
-        ,{id:"p",label:"P.O. No."},{id:"dateBalance",label:"Date Balance or Payment is Due"}]}/>
+        rows={[{dateSold:"",p:"",dateBalance:""}]}
+        columns={[{field:"dateSold",
+          cellDataType:"date",
+          valueFormatter: (params) => {
+          if(params.value){
+            const date = new Date(params.value);
+            return date.toLocaleDateString();
+          }
+          return  ""
+          },
+          cellEditor: "agDateCellEditor",
+
+          editable:true,headerName:"Date  Sold",flex:2}
+          ,{field:"p",editable:true,headerName: "P.O. No.",flex:2}
+          ,{field:"dateBalance",headerName:"Date Balance or Payment is Due",editable:true,flex:2}]}/>
       <Table
-        rows={[{quantity:"4",description:"description",rate:"2422",amount:"323"}]}
-        columns={[{id:"quantity",label:"Quantity"}
-          ,{id:"description",label:"description"}
-          ,{id:"rate",label:"Rate or Item Cost"},{id:"amount",label:"Amount"}]}/>
+        onCellValueChanged={filterPositiveNumbers}
+        rows={[{description:"",amount:""}]}
+        columns={[{field:"quantity",
+          cellEditor:"agNumberCellEditor",
+          cellDataType:"number",
+          editable:true,label:"Quantity"}
+          ,{field:"description",editable:true,label:"description"}
+          ,{field:"rate",
+            cellEditor:"agNumberCellEditor",
+            cellDataType:"number",
+            editable:true,label:"Rate or Item Cost"}
+          ,{field:"amount",valueGetter:(p)=>{
+            if(p.data.quantity && p.data.rate) return +(p.data.quantity)*+(+p.data.rate);
+              return "";
+            }
+        }]}/>
       <Box sx={{display:"flex"}}>
         <Box sx={{maxWidth:500}}>
           <Paper sx={{p:1}} >

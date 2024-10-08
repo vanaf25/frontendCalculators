@@ -1,12 +1,11 @@
-import { Typography } from '@mui/material';
+import { TextField } from '@mui/material';
 
-const BlueBlock = ({text,fullWidth}) => {
+const BlueBlock = ({fullWidth}) => {
   return (
-    <Typography sx={{display:fullWidth ? "block"
-        :"inline-block",margin:"0 5px",background:"lightBlue",
-      border:"1px solid black",p:1}} >
-       {text}
-    </Typography>
+    <TextField fullWidth={fullWidth}
+               defaultSize={"small"}
+               size="small"
+               id="standard-basic" label="Standard" variant="standard" />
   );
 };
 

@@ -3,41 +3,45 @@ import Table from '../../../components/letters/Table/Table';
 import { Typography } from '@mui/material';
 import BlueBlock from '../../../components/global/blueBlock/BlueBlock';
 import SignaturesSection from '../../../components/letters/signatureSection/signatureSection';
+import { useRef } from 'react';
 
 const AdditionalWorkOrder = () => {
+  const rows=[
+    {
+      "itemNumber": "",
+      "addWork": ""
+    },
+    {
+      "itemNumber": "",
+      "addWork": ""
+    },
+    {
+      "itemNumber": "",
+      "addWork": ""
+    },
+    {
+      "itemNumber": "",
+      "addWork": ""
+    },
+    {
+      "itemNumber": "",
+      "addWork": ""
+    }
+  ]
+const columns=[{field:"itemNumber",editable:true,headerName:"Item Number",flex:1}
+  ,{field:"addWork",
+    flex:4,
+    editable:true,
+    headerName:"We hereby submit the following specifically described additional work:"}]
+  const gridRef=useRef(null)
   return (
     <div>
       <CustomerDetails customer={{
         companyPhone:"0990930450",email:"vana@gmail.com",companyAddress:"24 rue de vignes"}}/>
       <CustomerDetails
         customer={{Estimator:"ivan",Email:"vanay@gmail.com",Phone:"0990930450",Address:"Some Adress"}}/>
-      <Table rows={[[
-        {
-          itemNumber: "dummy number 1",
-          addWork: "Dummy value 1: We hereby submit the following specifically described additional work."
-        },
-        {
-          itemNumber: "dummy number 1",
-          addWork: "Dummy value 1: We hereby submit the following specifically described additional work."
-        },
-        {
-          itemNumber: "dummy number 1",
-          addWork: "Dummy value 1: We hereby submit the following specifically described additional work."
-        },
-        {
-          itemNumber: "dummy number 1",
-          addWork: "Dummy value 1: We hereby submit the following specifically described additional work."
-        },
-        {
-          itemNumber: "dummy number 1",
-          addWork: "Dummy value 1: We hereby submit the following specifically described additional work."
-        }
-      ]
-      ]}
-             columns={[{id:"itemNumber",label:"Item Number"}
-        ,{id:"addWork",
-          label:"We hereby submit the following specifically described additional work:"}]}
-
+      <Table ref={gridRef} rows={rows}
+             columns={columns}
       />
         <Typography sx={{display:"inline",fontWeight:"700",mb:1}}>
           Additional charge for above described work is:       <BlueBlock text={"$5000"}/>
@@ -60,7 +64,7 @@ const AdditionalWorkOrder = () => {
           as specified. Payments will be made as outlined above.
         </Typography>
         <SignaturesSection client={"Customer Signature"}/>
-      
+
     </div>
   );
 };
