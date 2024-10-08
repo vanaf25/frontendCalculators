@@ -196,7 +196,7 @@ const JobCost = () => {
 
   const fullBidSubTableColumns = useMemo(() => [
     { field: 'subcontractorName', headerName: 'Full Bid Subcontractor Name' },
-    { field: 'deposit', headerName: 'Deposit' },
+    { field: 'deposit',editable:true, headerName: 'Deposit' },
     { field: 'payment1', editable: true, headerName: 'Payment 1' },
     { field: 'payment2', editable: true, headerName: 'Payment 2' },
     { field: 'payment3', editable: true, headerName: 'Payment 3' },
