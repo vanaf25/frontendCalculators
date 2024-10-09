@@ -1,14 +1,8 @@
-import { Grid, Typography } from '@mui/material';
+import {Typography } from '@mui/material';
 import CustomerDetails from '../../../components/global/CustomerDetails/CustomerDetails';
 import SignaturesSection from '../../../components/letters/signatureSection/signatureSection';
-import Box from '@mui/material/Box';
-const gridItemStyles = {
-  border: '1px solid black',
-  padding: '8px',
-  textAlign: 'center',
-};
+import Table from '../../../components/letters/Table/Table';
 const PunchOutOf15 = () => {
-  const data=[{main:"Some data added"},]
   return (
     <div>
       <Typography variant={"h3"}> 15 item Punch out</Typography>
@@ -22,22 +16,12 @@ const PunchOutOf15 = () => {
         touch up or bring up to standard the items listed below. Any items listed that do not pertain to the contract or
         are not clearly described in the contract language will be charged to the customer as additional work.
       </Typography>
-      <Grid container sx={{mb:2}}>
-        {data.map((el,index)=>{
-          return (<>
-            <Grid item xs={1}>
-              <Box sx={gridItemStyles}>{index}</Box>
-            </Grid>
-            <Grid item xs={10}>
-              <Box sx={{...gridItemStyles,background:"lightblue"}}>{el.main}</Box>
-            </Grid>
-            <Grid item xs={1}>
-              <Box sx={gridItemStyles}>Ok</Box>
-            </Grid>
-          </>)
-        })
-        }
-      </Grid>
+        <Table
+          columns={[{field:"num",flex:1},{field:"Description",editable:true,flex:6},
+          {field:"CheckBox",editable:true,flex:1, cellRenderer: 'agCheckboxCellRenderer',
+            cellEditor: 'agCheckboxCellEditor',}]}
+          rows={[...Array(15)].map((el,index)=>({num:index+1,description:"",checkBox:false}))}
+        />
       <Typography sx={{mb:1}}>
         {/* eslint-disable-next-line react/no-unescaped-entities */}
         As with all punch out item's although we will always do our best to make sure that the work performed is of good quality

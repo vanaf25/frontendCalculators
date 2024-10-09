@@ -78,6 +78,10 @@ import PunchOutOf15 from './pages/formLetters/OfficeManager/PunchOutOf15';
 import PunchOutOf60 from './pages/formLetters/OfficeManager/PunchOutOf60';
 import ThankYouLetter from './pages/formLetters/OfficeManager/ThankYouLetter';
 import Waranty from './pages/formLetters/OfficeManager/Waranty';
+import SafetyPaperWork from './pages/formLetters/safetyPaperWork/SafetyPaperWork';
+import IncidentReport from './pages/formLetters/safetyPaperWork/IncidentReport';
+import SafetyViolation from './pages/formLetters/safetyPaperWork/safetyViolation';
+import SafetyInspiration from './pages/formLetters/safetyPaperWork/SafetyInspiration';
 
 const AdminPage = lazy(() => import(/* webpackChunkName: "AdminPage" */ './pages/AdminPage'));
 
@@ -251,6 +255,12 @@ let routes = [
   {path:'/accounting/JobCost',component:JobCost},
   {path:'/accounting/SupplierPurchaseOrder',component:SupplierPurchcaseOrder},
   { path: "/legal", component: LegalLetter },
+  {path:"/safetyPaperWork",component:SafetyPaperWork},
+  {path:"/safetyPaperWork/incidentReport",component:IncidentReport},
+  {path:"/safetyPaperWork/safetyViolation",component:SafetyViolation},
+  {path:"/safetyPaperWork/safetyInspiration",component:SafetyInspiration},
+
+  {path:"/safetyPaperWork/incidentReport",component:IncidentReport},
 
   { path: "/officeManager", component: OfficeManager },
   { path: "/officeManager/AdditionalWorkOrder", component: AdditionalWorkOrder },

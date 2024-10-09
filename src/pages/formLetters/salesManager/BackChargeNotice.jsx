@@ -1,5 +1,5 @@
 import Paragraphs from '../../../components/letters/parahraphs/Paragraphs';
-import { Typography } from '@mui/material';
+import { TextField, Typography } from '@mui/material';
 import BlueBlock from '../../../components/global/blueBlock/BlueBlock';
 import SalesContactNumbers from '../../../components/letters/salesContactNumbers/salesContactNumbers';
 import Box from '@mui/material/Box';
@@ -23,10 +23,15 @@ const BackChargeNotice = () => {
       </Box>
       <Typography>Amount of back charge: <BlueBlock text={"Some text added"}/>
       </Typography>
-      <Typography>Reason for back charge</Typography>
-      <BlueBlock text={"Some text"} fullWidth/>
-      <BlueBlock text={"Some text"} fullWidth/>
-      <BlueBlock text={"Some text"} fullWidth/>
+      <Typography sx={{mb:1}}>Reason for back charge</Typography>
+      <TextField
+        label="Provide Reason"
+        multiline
+        rows={3}
+        variant="outlined"
+        sx={{ mb: 2 }}
+        fullWidth
+      />
       <SalesContactNumbers/>
     </div>
   );

@@ -1,14 +1,8 @@
-import { Grid, Typography } from '@mui/material';
+import {Typography } from '@mui/material';
 import CustomerDetails from '../../../components/global/CustomerDetails/CustomerDetails';
 import SignaturesSection from '../../../components/letters/signatureSection/signatureSection';
-import Box from '@mui/material/Box';
-const gridItemStyles = {
-  border: '1px solid black',
-  padding: '8px',
-  textAlign: 'center',
-};
+import Table from '../../../components/letters/Table/Table';
 const PunchOutOf15 = () => {
-  const data=[{main:"Some data added"},]
   return (
     <div>
       <Typography variant={"h3"}> 60 item Punch out</Typography>
@@ -25,23 +19,12 @@ const PunchOutOf15 = () => {
         124.00 per hour for 2 service persons as well as the cost for any extra material needed to complete the listed items.
         the customer agrees to take full responsibility for all work performed and hold the company blameless from any liability
       </Typography>
-      <Grid container sx={{mb:2}}>
-        {data.map((el,index)=>{
-          return (<>
-            <Grid item xs={1}>
-              <Box sx={gridItemStyles}>{index}</Box>
-            </Grid>
-            <Grid item xs={10}>
-              <Box sx={{...gridItemStyles,background:"lightblue"}}>{el.main}</Box>
-            </Grid>
-            <Grid item xs={1}>
-              <Box sx={gridItemStyles}>Ok</Box>
-            </Grid>
-          </>)
-        })
-        }
-      </Grid>
-      <Typography sx={{mb:1}}>
+      <Table
+        columns={[{field:"num",flex:1},{field:"Description",editable:true,flex:6},
+          {field:"CheckBox",editable:true,flex:1, cellRenderer: 'agCheckboxCellRenderer',
+            cellEditor: 'agCheckboxCellEditor',}]}
+        rows={[...Array(60)].map((el,index)=>({num:index+1,description:"",checkBox:false}))}
+      />      <Typography sx={{mb:1}}>
         {/* eslint-disable-next-line react/no-unescaped-entities */}
         As with all punch out item's although we will always do our best to make sure that the work performed is of good quality
         we do not have the ability to fully complete items to your personal tastes on this standard punch out list. To help us

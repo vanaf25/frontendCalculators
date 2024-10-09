@@ -1,6 +1,5 @@
-import { Typography } from '@mui/material';
+import { TextField, Typography } from '@mui/material';
 import Paragraphs from '../../../components/letters/parahraphs/Paragraphs';
-import BlueBlock from '../../../components/global/blueBlock/BlueBlock';
 import UnderlinedText from '../../../components/global/UnderlinedText/UnderlinedText';
 import Box from '@mui/material/Box';
 
@@ -18,9 +17,14 @@ const MissedLead = () => {
       </UnderlinedText>
     </Box>
       <Box sx={{mb:1}}>
-        <BlueBlock fullWidth text={"Some text added"}/>
-        <BlueBlock fullWidth text={"Some text added"}/>
-        <BlueBlock fullWidth text={"Some text added"}/>
+        <TextField
+          label="Provide Reason"
+          multiline
+          rows={3}
+          variant="outlined"
+          sx={{ mb: 2 }}
+          fullWidth
+        />
       </Box>
       <Box>
         <Typography sx={{mb:1}}>For more information contact company at</Typography>

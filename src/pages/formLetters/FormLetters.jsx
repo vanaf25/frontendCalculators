@@ -3,7 +3,7 @@ import { Paper } from '@mui/material';
 import { Link } from 'react-router-dom';
 
 const FormLetters = () => {
-  const letters=["accounting","legal","officeManager","productionPaperWork","salesManager"]
+  const letters=["accounting","legal","officeManager","productionPaperWork","salesManager","safetyPaperWork"]
   return (
     <Box sx={{maxWidth:900,margin:"10px auto"}}>
       {letters.map(el=>{
