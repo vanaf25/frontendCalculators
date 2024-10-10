@@ -24,6 +24,8 @@ const JobCost = () => {
     const totalPayments= calculateTotalAmount(laborTableRef, "totalPay")+
       calculateTotalAmount(fullBidSubTableRef, "totalCost")
     const totalPayments2=contractDetails.materialBudget-totalPayments
+    console.log(firstRowNode)
+    console.log(secondRowNode);
     if (firstRowNode){
       firstRowNode.setDataValue(totalKey,amount)
       firstRowNode.setDataValue(
