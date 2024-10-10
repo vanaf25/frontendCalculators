@@ -261,7 +261,7 @@ const JobCost = () => {
   const summaryTableRows = useMemo(() => [
     { field: "Bonus Archived", value: `$${result.bonusAchieved}` },
   ], [result]);
-  const onGridReady=useCallback((event)=> {
+  const onGridReady=useCallback(()=> {
     console.log('ready!!')
     updateSupplies()
     updateLaborSub()
