@@ -4,44 +4,50 @@ import Table from '../../../components/letters/Table/Table';
 import TableWithOutHeaders from '../../../components/letters/TableWithoutHeaders/TableWithOutHeaders';
 import calculateSeriesOfNumbers from '../../../utils/calculateSeriesOfNumbers';
 import calculateTotalAmount from '../../../utils/calculateTotalAmount';
-import InvoiceHeader from './InvoiceHeader';
+import ContractDetails from './ContractDetails';
+import UserDetails from './UserDetails';
 
 const totalKeys = ["amount", "totalPay", "totalCost"];
-
 const JobCost = () => {
+  const contractDetails={contractAmount:1000,materialBudget:1000,timeBonus:1000}
   const firstTableRef = useRef(null);
   const laborTableRef = useRef(null);
   const fullBidSubTableRef = useRef(null);
-  const totalPaymentsTableRef = useRef(null);
   const totalTableRef = useRef(null);
 
-  const [result, setResult] = useState({ income: 0, expense: 0, balance: 0, projectTaxes: 0 });
-
+  const [result, setResult] = useState({bonusAchieved:0 });
   const updateTotalTable = useCallback((ref, key, totalKey) => {
     console.log('upd!');
     const amount = calculateTotalAmount(ref, key);
-    const expense = calculateTotalAmount(laborTableRef, "totalPay") +
-      calculateTotalAmount(firstTableRef, "amount") +
-      calculateTotalAmount(fullBidSubTableRef, "totalCost");
-    const income = calculateTotalAmount(totalPaymentsTableRef, "total");
-    const balance = income - expense;
-    const projectTaxes = Math.round((balance * 2) * 100) / 100;
-    setResult({ expense, income, balance, projectTaxes });
-
     let firstRowNode = totalTableRef?.current?.api?.getDisplayedRowAtIndex(0);
-    if (firstRowNode) firstRowNode.setDataValue(totalKey, amount);
+    let secondRowNode=totalTableRef?.current?.api?.getDisplayedRowAtIndex(1);
+    const totalPayments= calculateTotalAmount(laborTableRef, "totalPay")+
+      calculateTotalAmount(fullBidSubTableRef, "totalCost")
+    const totalPayments2=contractDetails.materialBudget-totalPayments
+    if (firstRowNode){
+      firstRowNode.setDataValue(totalKey,amount)
+      firstRowNode.setDataValue(
+        "totalPayments",
+        totalPayments
+      )
+    }
+    if(secondRowNode){
+      if (totalKey==="supplies" || totalKey==="laborSub" || totalKey==="fullBidSub" ){
+        setResult({ bonusAchieved:totalPayments2<0 ?
+            totalPayments2+calculateTotalAmount(firstTableRef,"amount")+contractDetails.timeBonus:0 });
+      }
+      if (totalKey==="supplies") secondRowNode.setDataValue(totalKey,contractDetails.contractAmount-amount)
+      if (totalKey==="laborSub" || totalKey==="fullBidSub"){
+        secondRowNode.setDataValue("totalPayments",totalPayments2)
+      }
+    }
   }, []);
-
   const updateSupplies = useCallback(() => {
     updateTotalTable(firstTableRef, "amount", "supplies");
   }, [updateTotalTable,totalTableRef.current]);
 
   const updateFullBidSub = useCallback(() => {
     updateTotalTable(fullBidSubTableRef, "totalCost", "fullBidSub");
-  }, [updateTotalTable,totalTableRef.current]);
-
-  const updateTotalPayments = useCallback(() => {
-    updateTotalTable(totalPaymentsTableRef, "total", "totalPayments");
   }, [updateTotalTable,totalTableRef.current]);
 
   const updateLaborSub = useCallback(() => {
@@ -56,9 +62,6 @@ const JobCost = () => {
     updateFullBidSub();
   }, [updateFullBidSub]);
 
-  useEffect(() => {
-    updateTotalPayments();
-  }, [updateTotalPayments]);
 
   useEffect(() => {
     updateLaborSub();
@@ -75,11 +78,10 @@ const JobCost = () => {
       params.api.getRowNode(params.node.id).setDataValue(params.column.colId, newValue);
       updateSupplies();
       updateFullBidSub();
-      updateTotalPayments();
       updateLaborSub();
       console.log('totalKeys', totalKeys);
     }
-  }, [updateSupplies, updateFullBidSub, updateTotalPayments, updateLaborSub]);
+  }, [updateSupplies, updateFullBidSub, updateLaborSub]);
 
   // Мемоизация колонок и строк для каждой таблицы
   const firstTableColumns = useMemo(() => [
@@ -91,7 +93,7 @@ const JobCost = () => {
         return date.toLocaleDateString(); // Форматирование даты
       },
       editable: true, headerName: 'Date' },
-    { field: 'checkNumber', editable: true, headerName: 'Check #' },
+    { field: 'checkNumber', editable: true, headerName: 'time' },
     { field: 'amount', cellDataType: "number", editable: true,
       cellEditor: 'agNumberCellEditor', headerName: 'Amount',
       valueFormatter: (params) => parseFloat(params.value).toFixed(2) // Округление до двух знаков
@@ -145,7 +147,6 @@ const JobCost = () => {
       valueFormatter: (params) => params.value !== "-" ? `$${params.value}` : params.value
     }
   ], []);
-
   const laborTableRows = useMemo(() => [
     {
       "subcontractLaborName": "John Doe",
@@ -193,7 +194,6 @@ const JobCost = () => {
     },
     // Остальные строки...
   ], []);
-
   const fullBidSubTableColumns = useMemo(() => [
     { field: 'subcontractorName',editable:true,headerName: 'Full Bid Subcontractor Name' },
     { field: 'deposit', cellEditor: 'agNumberCellEditor', editable:true, headerName: 'Deposit' },
@@ -214,7 +214,6 @@ const JobCost = () => {
       valueFormatter: (params) => params.value !== "-" ? `$${params.value}` : params.value
     }
   ], []);
-
   const fullBidSubTableRows = useMemo(() => [
     {
       "subcontractorName": "ABC Construction",
@@ -236,132 +235,12 @@ const JobCost = () => {
     },
     // Остальные строки...
   ], []);
-
-  const totalPaymentsTableColumns = useMemo(() => [
-    { field: 'paymentsReceived', editable: true, headerName: 'Payments Received' },
-    { field: 'payment1', cellDataType: "number", editable: true, cellEditor: 'agNumberCellEditor',
-      headerName: 'Payment 1' },
-    { field: 'payment1Date', cellDataType: "date",
-      valueFormatter: (params) => {
-        const date = new Date(params.value);
-        return date.toLocaleDateString(); // Форматирование даты
-      }, editable: true, headerName: 'Date' },
-    { field: 'payment2', editable: true, cellEditor: 'agNumberCellEditor', headerName: 'Payment 2' },
-    { field: 'payment2Date', cellDataType: "date",
-      editable: true, headerName: 'Date',
-      valueFormatter: (params) => {
-        const date = new Date(params.value);
-        return date.toLocaleDateString(); // Форматирование даты
-      }
-    },
-    { field: 'payment3', editable: true, cellEditor: 'agNumberCellEditor', headerName: 'Payment 3' },
-    { field: 'payment3Date',
-      valueFormatter: (params) => {
-        const date = new Date(params.value);
-        return date.toLocaleDateString(); // Форматирование даты
-      },
-      cellDataType: "date", editable: true, headerName: 'Date' },
-    { field: 'payment4', editable: true, cellEditor: 'agNumberCellEditor', headerName: 'Payment 4' },
-    { field: 'payment4Date',
-      valueFormatter: (params) => {
-        const date = new Date(params.value);
-        return date.toLocaleDateString(); // Форматирование даты
-      },
-      editable: true, cellDataType: "date", headerName: 'Date' },
-    { field: 'total', valueGetter: (p) => calculateSeriesOfNumbers(p, "payment", 4),
-      headerName: 'Total',
-      valueFormatter: (params) => params.value !== "-" ? `$${params.value}` : params.value
-    }
-  ], []);
-
-  const totalPaymentsTableRows = useMemo(
-    () => [
-      {
-        "paymentsReceived": "Contract payments",
-        "payment1": 5000,
-        "payment1Date": "2024-09-01",
-        "payment2": 3000,
-        "payment2Date": "2024-09-30",
-        "payment3": 2500,
-        "payment3Date": "2024-09-20",
-        "payment4": 2000,
-        "payment4Date": "2024-09-25"
-      },
-      {
-        "paymentsReceived": "Change Order 1",
-        "payment1": 4000,
-        "payment1Date": "2024-10-01",
-        "payment2": 2500,
-        "payment2Date": "2024-10-15",
-        "payment3": 3000,
-        "payment3Date": "2024-10-30",
-        "payment4": 3500,
-        "payment4Date": "2024-11-05"
-      },
-      {
-        "paymentsReceived": "Change Order 2",
-        "payment1": 6000,
-        "payment1Date": "2024-10-05",
-        "payment2": 4500,
-        "payment2Date": "2024-10-20",
-        "payment3": 3200,
-        "payment3Date": "2024-11-01",
-        "payment4": 4000,
-        "payment4Date": "2024-11-15"
-      },
-      {
-        "paymentsReceived": "Change Order 3",
-        "payment1": 3500,
-        "payment1Date": "2024-09-10",
-        "payment2": 1500,
-        "payment2Date": "2024-09-30",
-        "payment3": 500,
-        "payment3Date": "2024-10-05",
-        "payment4": 2000,
-        "payment4Date": "2024-10-15"
-      },
-      {
-        "paymentsReceived": "Change Order 4",
-        "payment1": 3500,
-        "payment1Date": "2024-09-10",
-        "payment2": 1500,
-        "payment2Date": "2024-09-30",
-        "payment3": 500,
-        "payment3Date": "2024-10-05",
-        "payment4": 2000,
-        "payment4Date": "2024-10-15"
-      },
-      {
-        "paymentsReceived": "Change Order 5",
-        "payment1": 3500,
-        "payment1Date": "2024-09-10",
-        "payment2": 1500,
-        "payment2Date": "2024-09-30",
-        "payment3": 500,
-        "payment3Date": "2024-10-05",
-        "payment4": 2000,
-        "payment4Date": "2024-10-15"
-      },
-      {
-        "paymentsReceived": "Change Order 6",
-        "payment1": 3500,
-        "payment1Date": "2024-09-10",
-        "payment2": 1500,
-        "payment2Date": "2024-09-30",
-        "payment3": 500,
-        "payment3Date": "2024-10-05",
-        "payment4": 2000,
-        "payment4Date": "2024-10-15"
-      },
-    ]
-    , []);
-
   const totalTableColumns = useMemo(() => [
     { field: 'total', headerName: '' },
-    { field: 'supplies', headerName: 'Supplies' },
-    { field: 'laborSub', headerName: 'Labor Sub' },
-    { field: 'fullBidSub', headerName: 'Full Bid Sub' },
-    { field: 'totalPayments', headerName: 'Total Payments' }
+    { field: 'supplies',flex:1, headerName: 'Supplies' },
+    { field: 'laborSub', flex:1, headerName: 'Hourly Sub ' },
+    { field: 'fullBidSub', flex:1, headerName: 'Non Hourly Sub' },
+    { field: 'totalPayments', flex:1, headerName: 'Total Payments' }
   ], []);
 
   const totalTableRows = useMemo(() => [{
@@ -370,22 +249,24 @@ const JobCost = () => {
     laborSub: 0,
     fullBidSub: 0,
     totalPayments: 0
-  }], []);
+  },
+    {
+      supplies: 0,
+      total: "Balance of budget",
+      laborSub: null,
+      fullBidSub: null,
+      totalPayments: 0
+    }
+  ], []);
 
   // Мемоизация столбцов и строк для TableWithOutHeaders
   const summaryTableRows = useMemo(() => [
-    { field: "Income", value: `$${result.income}` },
-    { field: "Expense", value: `$${result.expense}` },
-    { field: "Balance", value: `$${result.balance}` }
+    { field: "Bonus Archived", value: `$${result.bonusAchieved}` },
   ], [result]);
-
-  const taxesTableRows = useMemo(() => [
-    { field: "Projected Taxes", value: `$${result.projectTaxes}` }
-  ], [result]);
-
   return (
     <Box sx={{ maxWidth: 900, margin: "0 auto" }}>
-      <InvoiceHeader/>
+      <ContractDetails {...contractDetails}/>
+      <UserDetails/>
       <Table
         columns={firstTableColumns}
         rows={firstTableRows}
@@ -405,27 +286,15 @@ const JobCost = () => {
         rows={fullBidSubTableRows}
       />
       <Table
-        onCellValueChanged={onCellValueChanged}
-        customRef={totalPaymentsTableRef}
-        columns={totalPaymentsTableColumns}
-        rows={totalPaymentsTableRows}
-      />
-      <Table
         columns={totalTableColumns}
         customRef={totalTableRef}
         rows={totalTableRows}
-        onCellValueChanged={onCellValueChanged}
       />
       <Box sx={{ display: "flex" }}>
         <TableWithOutHeaders
           sx={{ width: 300, mr: 1 }}
           rows={summaryTableRows}
         />
-        <Box>
-          <TableWithOutHeaders
-            rows={taxesTableRows}
-          />
-        </Box>
       </Box>
     </Box>
   );

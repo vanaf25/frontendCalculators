@@ -49,6 +49,7 @@ import Notice1 from './pages/formLetters/ProductionPaperWork/Notice1';
 import NewWorkerExpectations from './pages/formLetters/ProductionPaperWork/NewWorkerExpectations';
 import MutualTermination from './pages/formLetters/ProductionPaperWork/MutualTermination';
 import HarshTermination from './pages/formLetters/ProductionPaperWork/HarshTermination';
+import SubContractTermination  from './pages/formLetters/subcontractPaperWork/Termination'
 import GoldenRules from './pages/formLetters/ProductionPaperWork/GoldenRules';
 import Expectations from './pages/formLetters/ProductionPaperWork/Expectations';
 import OfficeManager from './pages/formLetters/OfficeManager/OfficeManager';
@@ -82,6 +83,10 @@ import SafetyPaperWork from './pages/formLetters/safetyPaperWork/SafetyPaperWork
 import IncidentReport from './pages/formLetters/safetyPaperWork/IncidentReport';
 import SafetyViolation from './pages/formLetters/safetyPaperWork/safetyViolation';
 import SafetyInspiration from './pages/formLetters/safetyPaperWork/SafetyInspiration';
+import SubContractPaperWork from './pages/formLetters/subcontractPaperWork/SubContractPaperWork';
+import SubContract from './pages/formLetters/subcontractPaperWork/SubContract';
+import SubContractJobCost from './pages/formLetters/subcontractPaperWork/JobCost';
+import PointOfContact from './pages/formLetters/subcontractPaperWork/PointOfContact';
 
 const AdminPage = lazy(() => import(/* webpackChunkName: "AdminPage" */ './pages/AdminPage'));
 
@@ -255,6 +260,11 @@ let routes = [
   {path:'/accounting/JobCost',component:JobCost},
   {path:'/accounting/SupplierPurchaseOrder',component:SupplierPurchcaseOrder},
   { path: "/legal", component: LegalLetter },
+  {path:"/subContractPaperWork",component:SubContractPaperWork},
+  {path:"/subContractPaperWork/subContract",component:SubContract},
+  {path:"/subContractPaperWork/JobCost",component:SubContractJobCost},
+  {path:"/subContractPaperWork/PointOfContact",component:PointOfContact},
+  {path:"/subContractPaperWork/Termination",component:SubContractTermination},
   {path:"/safetyPaperWork",component:SafetyPaperWork},
   {path:"/safetyPaperWork/incidentReport",component:IncidentReport},
   {path:"/safetyPaperWork/safetyViolation",component:SafetyViolation},
