@@ -24,8 +24,8 @@ const JobCost = () => {
     const totalPayments= calculateTotalAmount(laborTableRef, "totalPay")+
       calculateTotalAmount(fullBidSubTableRef, "totalCost")
     const totalPayments2=contractDetails.materialBudget-totalPayments
-    console.log(firstRowNode)
-    console.log(secondRowNode);
+    console.log('first:',firstRowNode)
+    console.log("second:",secondRowNode);
     if (firstRowNode){
       firstRowNode.setDataValue(totalKey,amount)
       firstRowNode.setDataValue(
@@ -244,7 +244,6 @@ const JobCost = () => {
     { field: 'fullBidSub', flex:1, headerName: 'Non Hourly Sub' },
     { field: 'totalPayments', flex:1, headerName: 'Total Payments' }
   ], []);
-
   const totalTableRows = useMemo(() => [{
     supplies: 0,
     total: "Total",
@@ -260,8 +259,6 @@ const JobCost = () => {
       totalPayments: 0
     }
   ], []);
-
-  // Мемоизация столбцов и строк для TableWithOutHeaders
   const summaryTableRows = useMemo(() => [
     { field: "Bonus Archived", value: `$${result.bonusAchieved}` },
   ], [result]);
