@@ -287,6 +287,8 @@ const JobCost = () => {
         columns={totalTableColumns}
         customRef={totalTableRef}
         rows={totalTableRows}
+        onCellValueChanged={onCellValueChanged}
+
       />
       <Box sx={{ display: "flex" }}>
         <TableWithOutHeaders
