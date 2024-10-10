@@ -262,6 +262,7 @@ const JobCost = () => {
     { field: "Bonus Archived", value: `$${result.bonusAchieved}` },
   ], [result]);
   const onGridReady=useCallback((event)=> {
+    console.log('ready!!')
     updateSupplies()
     updateLaborSub()
     updateFullBidSub()
