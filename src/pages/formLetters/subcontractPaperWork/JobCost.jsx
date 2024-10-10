@@ -4,7 +4,7 @@ import Table from '../../../components/letters/Table/Table';
 import TableWithOutHeaders from '../../../components/letters/TableWithoutHeaders/TableWithOutHeaders';
 import calculateSeriesOfNumbers from '../../../utils/calculateSeriesOfNumbers';
 import calculateTotalAmount from '../../../utils/calculateTotalAmount';
-import InvoiceHeader from './InvoiceHeader';
+import InvoiceHeader from "../accounting/InvoiceHeader";
 
 const totalKeys = ["amount", "totalPay", "totalCost"];
 
