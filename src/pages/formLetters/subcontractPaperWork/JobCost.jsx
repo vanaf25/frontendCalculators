@@ -261,6 +261,12 @@ const JobCost = () => {
   const summaryTableRows = useMemo(() => [
     { field: "Bonus Archived", value: `$${result.bonusAchieved}` },
   ], [result]);
+  const onGridReady=useCallback((event)=> {
+    updateSupplies()
+    updateLaborSub()
+    updateFullBidSub()
+  },[]);
+
   return (
     <Box sx={{ maxWidth: 900, margin: "0 auto" }}>
       <ContractDetails {...contractDetails}/>
@@ -287,8 +293,7 @@ const JobCost = () => {
         columns={totalTableColumns}
         customRef={totalTableRef}
         rows={totalTableRows}
-        onCellValueChanged={onCellValueChanged}
-
+        onGridReady={onGridReady}
       />
       <Box sx={{ display: "flex" }}>
         <TableWithOutHeaders
