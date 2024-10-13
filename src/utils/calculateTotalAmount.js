@@ -7,6 +7,7 @@ export default (ref,key)=>{
       values.push(value);
     });
     const amount=values?.reduce((sum, node) => sum + (+node || 0), 0)
+    console.log('amount:',amount);
     return amount ? amount :""
   }
   return  ""

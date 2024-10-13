@@ -87,6 +87,11 @@ import SubContractPaperWork from './pages/formLetters/subcontractPaperWork/SubCo
 import SubContract from './pages/formLetters/subcontractPaperWork/SubContract';
 import SubContractJobCost from './pages/formLetters/subcontractPaperWork/JobCost';
 import PointOfContact from './pages/formLetters/subcontractPaperWork/PointOfContact';
+import System99Calculator from "./pages/formLetters/System99Calculator/System99Calculator";
+import Pricing from "./pages/formLetters/System99Calculator/Pricing";
+import Material from "./pages/formLetters/System99Calculator/Material";
+import Mesurments from "./pages/formLetters/System99Calculator/Messurments/Mesurments";
+import ComissionSheet from "./pages/formLetters/System99Calculator/ComissionSheet";
 
 const AdminPage = lazy(() => import(/* webpackChunkName: "AdminPage" */ './pages/AdminPage'));
 
@@ -265,6 +270,11 @@ let routes = [
   {path:"/subContractPaperWork/JobCost",component:SubContractJobCost},
   {path:"/subContractPaperWork/PointOfContact",component:PointOfContact},
   {path:"/subContractPaperWork/Termination",component:SubContractTermination},
+  {path:"/system99Calculator",component:System99Calculator},
+  {path:"/system99Calculator/Mesurments",component:Mesurments},
+  {path:"/system99Calculator/ComissionSheet",component:ComissionSheet},
+  {path:"/system99Calculator/Material",component:Material},
+  {path:"/system99Calculator/Pricing",component:Pricing},
   {path:"/safetyPaperWork",component:SafetyPaperWork},
   {path:"/safetyPaperWork/incidentReport",component:IncidentReport},
   {path:"/safetyPaperWork/safetyViolation",component:SafetyViolation},
