@@ -1,7 +1,9 @@
+import {Typography} from "@mui/material";
+
 const Pricing = () => {
   return (
     <div>
-      Prcing
+      <Typography variant={"h4"}>Work on this component in progress...</Typography>
     </div>
   );
 };
