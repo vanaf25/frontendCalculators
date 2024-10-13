@@ -76,6 +76,7 @@ const Fence = () => {
       <Grid xs={12} sm={6} >
         <Table customRef={tableWidthRef}
                columns={columns}
+               onGridReady={()=>setLinerFeet(calculateTotalAmount(tableWidthRef,"length"))}
                onCellValueChanged={onCellValueChanged}
                rows={rows}/>
       </Grid>
@@ -96,7 +97,7 @@ const Fence = () => {
         {/* Flex Container for Square Feet Calculations */}
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant="body1">
-            Liner Feet: {linerFeet * 6} sq ft
+            Liner Feet: {linerFeet} sq ft
           </Typography>
           <Typography variant="body1">
             Square Feet for 6 Foot Fence: {linerFeet * 6} sq ft
