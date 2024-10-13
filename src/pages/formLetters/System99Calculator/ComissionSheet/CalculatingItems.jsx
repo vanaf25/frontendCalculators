@@ -2,6 +2,8 @@ import React, {useCallback, useMemo} from 'react';
 import Box from "@mui/material/Box";
 import Table from "../../../../components/letters/Table/Table";
 import calculateTotalAmount from "../../../../utils/calculateTotalAmount";
+import TableName from "../../../../components/letters/TableName/TableName";
+import {Grid} from "@mui/material";
 
 const CalculatingItems = ({setTotal}) => {
   const createLengthColumn = useCallback((name) => {
@@ -64,12 +66,21 @@ const CalculatingItems = ({setTotal}) => {
     }
   }, []);
   return (
-    <Box width={400}>
-      {itemsArray.map(el=><Table onCellValueChanged={onCellValueChanged}
-                                 key={el.name}
-                                 columns={createLengthColumn(el.name)}
-                                 rows={el.rows} customRef={el.ref}  />)}
+    <Box>
+      <TableName>
+        Commission Calculator
+      </TableName>
+      <Grid container mb={2} spacing={2} >
+        {itemsArray.map(el=><Grid  item key={el.name}
+                                                   xs={12} sm={4}>
+          <Table withOutMargin  onCellValueChanged={onCellValueChanged}
+                 columns={createLengthColumn(el.name)}
+                 rows={el.rows} customRef={el.ref}  />
+        </Grid>)}
+
+      </Grid>
     </Box>
+
   );
 };
 
