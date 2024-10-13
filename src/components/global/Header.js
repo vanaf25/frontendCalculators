@@ -36,6 +36,9 @@ export default function Header() {
       <NavLink className={styles.navTxt} to="/calculators">
         Calculators1
       </NavLink>
+      <NavLink className={styles.navTxt} to="/formLetters">
+        FormLetters
+      </NavLink>
       <NavLink className={styles.navTxt} to="/products">
        Products
       </NavLink>
