@@ -6,7 +6,7 @@ const FormLetters = () => {
   const letters=["accounting","legal","officeManager","productionPaperWork",
     "salesManager","safetyPaperWork","subContractPaperWork","system99Calculator"]
   return (
-    <Box sx={{maxWidth:900,margin:"10px auto"}}>
+    <Box sx={{maxWidth:1000,margin:"10px auto"}}>
       {letters.map(el=>{
         return <Paper sx={{p:2,width:"80%",margin:"0 auto 10px",fontSize:25,textAlign:"center"}} key={el}>
           <Link to={`/formLetters/${el}`}>

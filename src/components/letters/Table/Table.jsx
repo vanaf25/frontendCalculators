@@ -8,13 +8,14 @@ const ReusableTable = React.memo( ({
   return (
     <div
       className="ag-theme-quartz"
-      style={{height:rows?.length===1 ? "93px":undefined,marginBottom:withOutMargin ? "0px":"30px" }}
+      style={{height:rows?.length===1 ?
+          "93px":rows?.length<4 ? (rows?.length)*42+51  : undefined,marginBottom:withOutMargin ? "0px":"30px" }}
     >
     <AgGridReact
       rowData={rows}
       columnDefs={columns}
       ref={customRef}
-      domLayout='autoHeight'
+      domLayout={rows?.length>3 ? "autoHeight":undefined}
       {...anotherProps}
     />
     </div>

@@ -10,6 +10,12 @@ import WoodFascia from "./WoodFascia";
 import DeckSurface from "./DeckSurface";
 import RailingSystems from "./RailingSystems";
 import DeckFrame from "./DeckFrame";
+import DeckAndPorchCover from "./DeckAndPorchCover";
+import Fence from "./Fence";
+import ConcreteSlab from "./ConcreteSlab";
+import ExtraParts from "./ExtraParts";
+import WindowsParts from "./WindowsParts";
+import VynilSoffit from "./VynilSoffit";
 
 const Material = () => {
   return (
@@ -22,10 +28,16 @@ const Material = () => {
       <GenericHomeWrap/>
       <HardieFascia/>
       <Paint/>
+      <WindowsParts/>
       <WoodFascia/>
+      <VynilSoffit/>
       <DeckSurface/>
       <RailingSystems/>
       <DeckFrame/>
+      <DeckAndPorchCover/>
+      <Fence/>
+      <ConcreteSlab/>
+      <ExtraParts/>
     </div>
   );
 };

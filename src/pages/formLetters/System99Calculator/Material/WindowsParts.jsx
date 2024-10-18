@@ -1,8 +1,6 @@
-import React, {useMemo} from 'react';
+import {useMemo} from 'react';
 import TableWithFalseColumn from "../../../../components/letters/TableWithFalseColumn/TableWithFalseColumn";
 import {Grid} from "@mui/material";
-import TableName from "../../../../components/letters/TableName/TableName";
-
 const WindowsParts = () => {
   const rows = useMemo(() => [
     { item: 'Painters Caulk white', quantity: 0 },

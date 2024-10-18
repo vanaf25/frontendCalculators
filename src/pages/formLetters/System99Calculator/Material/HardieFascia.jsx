@@ -6,9 +6,9 @@ import {Grid} from "@mui/material";
 const HardieFasciaTable = () => {
   const columns = useMemo(() => [
     { headerName: 'Hardie Color Plus Fascia', field: 'hardieColorPlusFascia', flex: 2 },
-    { headerName: 'Faux', field: 'colorPlusQuantity', flex: 1 },
+    { headerName: 'False', field: 'colorPlusQuantity', flex: 1 },
     { headerName: 'Hardie Fascia', field: 'hardieFascia', flex: 2 },
-    { headerName: 'Faux', field: 'fasciaQuantity', flex: 1 }
+    { headerName: 'False', field: 'fasciaQuantity', flex: 1 }
   ], []);
   const rows = useMemo(() => [
     { hardieColorPlusFascia: '2" Exterior screws 1 lb box', colorPlusQuantity: 0, hardieFascia: '2" Exterior screws 1 lb box', fasciaQuantity: 0 },

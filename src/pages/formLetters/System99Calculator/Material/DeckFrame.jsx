@@ -35,21 +35,40 @@ const DeckFrame = () => {
         {item:"Treated 2x12x12",quantity:0},
         {item:"Cedar 2x12x12",quantity:0}
       ]}
+  ];
+  const deckStairsTrexTables=[
+    {
+    headerName:"36 Inch Trex G1",
+      rows:[{item:"Trex 1x6x12",quantity:0}]
+  },
+    {
+      headerName:"48 Inch Trex G1",
+      rows:[{item:"Trex 1x6x12",quantity:0}]
+    },
+    {
+      headerName:"72 Inch Trex G1",
+      rows:[{item:"Trex 1x6x12",quantity:0}]
+    }
   ]
   return (
     <div>
       <Grid container>
-        <Grid xs={12} sm={6} item>
+        <Grid xs={12} sm={4.5} item>
           <TableName>Deck Frame</TableName>
           <TableWithFalseColumn itemHeaderName={"Deck Frame Grade 1"}  rows={rows1}/>
           <TableWithFalseColumn itemHeaderName={"Deck Frame Grade 2"}  rows={rows2}/>
-
         </Grid>
-        <Grid xs={12} sm={6} item>
+        <Grid xs={12} sm={4.5} item>
           <TableName>Deck Stairs Wood</TableName>
           {deckWoodTables.map(
             el=>
               <TableWithFalseColumn withOutMargin key={el.title} itemHeaderName={el.title} rows={el.rows}/>)}
+        </Grid>
+        <Grid xs={12} sm={3}>
+          <TableName>Deck Stairs Trex</TableName>
+          {deckStairsTrexTables.map(el=><TableWithFalseColumn withOutMargin key={el.headerName}
+                                                              itemHeaderName={el.headerName} rows={el.rows}/>)}
+
         </Grid>
       </Grid>
 

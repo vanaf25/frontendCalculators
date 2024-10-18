@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from "react";
-import Table from "../../../../components/letters/Table/Table"; // Adjust the path as needed
-import Box from "@mui/material/Box";
+import TableWithFalseColumn from "../../../../components/letters/TableWithFalseColumn/TableWithFalseColumn";
 
 const LinealFinishTrimParts = () => {
   const createColumns = useCallback(headerName => ([
@@ -29,26 +28,24 @@ const LinealFinishTrimParts = () => {
   ]), []);
   const tables = useMemo(() => ([
     {
-      columns: createColumns("Lineal Parts"),
+      name: "Lineal 3 1/2",
       rows: generateRowsForFirstTable()
     },
     {
-      columns: createColumns("Trim Parts"),
+      name: "Lineal 5 1/2",
       rows: generateRowsForSecondTable()
     }
   ]), [createColumns, generateRowsForFirstTable, generateRowsForSecondTable]);
-  console.log('moun!');
   return (
     <div>
-          {tables.map((table, index) => (
-            <Box key={index} sx={{ height: 93 }}>
-              <Table
+          {tables.map((table) => (
+              <TableWithFalseColumn
                 withOutMargin
-                columns={table.columns}
+                key={table.name}
+                itemHeaderName={table.name}
                 rows={table.rows}
-              />
-            </Box>
-          ))}
+              />)
+          )}
     </div>
   );
 };

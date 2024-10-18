@@ -5,9 +5,9 @@ const SheetingTable = () => {
   // Define table columns
   const columns = useMemo(() => [
     { headerName: '3/4 Sheeting', field: 'threeQuarterSheeting', flex: 1, cellStyle: { textAlign: 'left', backgroundColor: '#F6E9C3' } },
-    { headerName: 'FAUX', field: 'threeQuarterFaux', flex: 1, cellStyle: { textAlign: 'left', backgroundColor: '#DDE4F4' } },
+    { headerName: 'False', field: 'threeQuarterFaux', flex: 1, cellStyle: { textAlign: 'left', backgroundColor: '#DDE4F4' } },
     { headerName: '1/2 Sheeting', field: 'halfSheeting', flex: 1, cellStyle: { textAlign: 'left', backgroundColor: '#F6E9C3' } },
-    { headerName: 'FAUX', field: 'halfFaux', flex: 1, cellStyle: { textAlign: 'left', backgroundColor: '#DDE4F4' } }
+    { headerName: 'False', field: 'halfFaux', flex: 1, cellStyle: { textAlign: 'left', backgroundColor: '#DDE4F4' } }
   ], []);
 
   // Define row data

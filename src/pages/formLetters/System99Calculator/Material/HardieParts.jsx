@@ -1,22 +1,7 @@
 import {useMemo} from 'react';
-import Table from "../../../../components/letters/Table/Table";
-import {Grid} from "@mui/material";
+import TableGrid from "../../../../components/letters/TableGrid/TableGrid";
 
 const HardieParts = () => {
-  const columnDefs = useMemo(() => [
-    {
-      headerName: 'Item',
-      field: 'item',
-      flex: 4, // 80% of the width
-      cellStyle: { textAlign: 'left' }
-    },
-    {
-      headerName: 'Quantity',
-      field: 'quantity',
-      flex: 1, // 20% of the width
-      cellStyle: { textAlign: 'left' }
-    }
-  ], []);
   const rowData = useMemo(() => [
     { item: 'Hardie trim 1x2x12', quantity: 0 },
     { item: 'Hardie trim 1x4x12', quantity: 0 },
@@ -35,20 +20,6 @@ const HardieParts = () => {
     { item: 'Exterior nail gun siding nails per box', quantity: 0 },
     { item: 'T 50 staples per Box', quantity: 0 },
     { item: 'Exterior screws', quantity: 0 },
-  ], []);
-  const columnDefs2 = useMemo(() => [
-    {
-      headerName: 'Hardie Color Plus Parts',
-      field: 'item',
-      flex: 4,
-      cellStyle: { textAlign: 'left' }
-    },
-    {
-      headerName: 'Quantity',
-      field: 'quantity',
-      flex: 1,
-      cellStyle: { textAlign: 'left' }
-    }
   ], []);
   const rowData2 = useMemo(() => [
     { item: 'Hardie trim 1x2x12', quantity: 0 },
@@ -71,16 +42,22 @@ const HardieParts = () => {
     { item: 'T 50 staples per Box', quantity: 0 },
     { item: '3 1/2" Exterior screws 1 lb box', quantity: 0 },
   ], []);
+  const tables=[
+    {
+      name:"Hardie painted Siding Parts",
+      rows:rowData
+    },
+    {
+      name:"Hardie Color Plus Parts",
+      rows:rowData2
+    }
+  ]
   return (
     <div>
-      <Grid container spacing={2}>
-        <Grid xs={12} sm={6} item>
-          <Table columns={columnDefs} rows={rowData}/>
-        </Grid>
-        <Grid xs={12} sm={6} item>
-          <Table columns={columnDefs2} rows={rowData2}/>
-        </Grid>
-      </Grid>
+     <TableGrid tables={[
+       [tables[0]],
+       [tables[1]]
+     ]}/>
     </div>
   );
 };
