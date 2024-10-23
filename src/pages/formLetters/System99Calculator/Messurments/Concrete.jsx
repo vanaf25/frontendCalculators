@@ -4,12 +4,19 @@ import Table from "../../../../components/letters/Table/Table";
 import lengthAndWidthColumns from "../../../../consts/LengthAndWidthColumns";
 import { TextField, Box } from '@mui/material';
 
-const Concrete = () => {
+const Concrete = ({onCellValueChanged,customRef,additionalColumns}) => {
   const [thickness1, setThickness1] = useState('');
   const [thickness2, setThickness2] = useState('');
-
-  const rows = useMemo(
-    () => Array(5).fill(() => ({ length: null, width: null })),
+  const columns=useMemo(()=>([...lengthAndWidthColumns,...additionalColumns]),[lengthAndWidthColumns,additionalColumns])
+  console.log('colum`1`ns:',columns);
+  const rows =
+    useMemo(()=>(
+    [
+      {length:0,width:0,lengthMultiply:0,widthMultiply:0,totalMultiply:0,slab1:0,slab2:0},
+      {length:0,width:0,lengthMultiply:0,widthMultiply:0,totalMultiply:0,slab1:0,slab2:0},
+      {length:0,width:0,lengthMultiply:0,widthMultiply:0,totalMultiply:0,slab1:0,slab2:0},
+      {length:0,width:0,lengthMultiply:0,widthMultiply:0,totalMultiply:0,slab1:0,slab2:0},
+    ]),
     []
   );
 
@@ -18,7 +25,8 @@ const Concrete = () => {
       <TableName>
         Concrete Patio
       </TableName>
-      <Table columns={lengthAndWidthColumns} rows={rows} />
+      <Table
+             columns={columns} rows={rows} onCellValueChanged={onCellValueChanged} customRef={customRef} />
 
       {/* Input Fields for Thickness */}
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2,

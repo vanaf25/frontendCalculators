@@ -1,7 +1,6 @@
 export default [
   {
     headerName: 'Length',
-    cellDataType: 'number',
     cellEditor: 'agNumberCellEditor',
     field: 'length',
     editable: true,
@@ -9,7 +8,6 @@ export default [
   },
   {
     headerName: 'Width',
-    cellDataType: 'number',
     cellEditor: 'agNumberCellEditor',
     field: 'width',
     editable: true,

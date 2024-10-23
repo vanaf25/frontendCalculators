@@ -88,7 +88,7 @@ import SubContract from './pages/formLetters/subcontractPaperWork/SubContract';
 import SubContractJobCost from './pages/formLetters/subcontractPaperWork/JobCost';
 import PointOfContact from './pages/formLetters/subcontractPaperWork/PointOfContact';
 import System99Calculator from "./pages/formLetters/System99Calculator/System99Calculator";
-import Pricing from "./pages/formLetters/System99Calculator/Pricing";
+import Pricing from "./pages/formLetters/System99Calculator/Pricing/Pricing";
 import Material from "./pages/formLetters/System99Calculator/Material/Material";
 import Mesurments from "./pages/formLetters/System99Calculator/Messurments/Mesurments";
 import ComissionSheet from "./pages/formLetters/System99Calculator/ComissionSheet/ComissionSheet";

@@ -3,15 +3,29 @@ import TableName from "../../../../components/letters/TableName/TableName";
 import Table from "../../../../components/letters/Table/Table";
 import lengthAndWidthColumns from "../../../../consts/LengthAndWidthColumns";
 
-const Concrete = () => {
+const Concrete = ({additionalColumns,additionalRow,onCellValueChanged,customRef}) => {
+  const columns=useMemo(()=>([...lengthAndWidthColumns,...additionalColumns]),[]);
   const rows = useMemo(
-    ()=>Array(3).fill(()=>(({length:null,width:null})), []))
+    ()=>{
+      const defaultArray= [
+        {length:0,width:0,},
+        {length:0,width:0,},
+        {length:0,width:0,}
+
+      ]
+      if (additionalRow){
+        return defaultArray.map(el=>({...el,...additionalRow}))
+      }
+      return defaultArray
+    }, [])
   return (
     <div>
       <TableName>
         Excavation
       </TableName>
-      <Table  columns={lengthAndWidthColumns}
+      <Table  columns={columns}
+              customRef={customRef}
+              onCellValueChanged={onCellValueChanged}
              rows={rows}/>
     </div>
   );
