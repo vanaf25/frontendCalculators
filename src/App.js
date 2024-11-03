@@ -92,6 +92,7 @@ import Pricing from "./pages/formLetters/System99Calculator/Pricing/Pricing";
 import Material from "./pages/formLetters/System99Calculator/Material/Material";
 import Mesurments from "./pages/formLetters/System99Calculator/Messurments/Mesurments";
 import ComissionSheet from "./pages/formLetters/System99Calculator/ComissionSheet/ComissionSheet";
+import ItemsSection from "./pages/formLetters/System99Calculator/Pricing/ItemsSection/ItemsSection";
 
 const AdminPage = lazy(() => import(/* webpackChunkName: "AdminPage" */ './pages/AdminPage'));
 
@@ -274,6 +275,7 @@ let routes = [
   {path:"/system99Calculator/Mesurments",component:Mesurments},
   {path:"/system99Calculator/ComissionSheet",component:ComissionSheet},
   {path:"/system99Calculator/Material",component:Material},
+  {path:"/system99Calculator/itemsTable",component:ItemsSection},
   {path:"/system99Calculator/Pricing",component:Pricing},
   {path:"/safetyPaperWork",component:SafetyPaperWork},
   {path:"/safetyPaperWork/incidentReport",component:IncidentReport},
@@ -367,7 +369,11 @@ const App = () => {
           <Route exact path="/formLetters" component={FormLetters}/>
           {routes.map((route,index)=><Route key={index}
                                             path={route.path} exact
-                                            render={()=><Box sx={{maxWidth:900,margin:"10px auto"}}>
+                                            render={()=><Box sx={{
+                                              maxWidth:1300,margin:"10px auto",padding:
+                                                route.path.
+                                                includes("System99Calculator/itemsTable") ?
+                                                "10px":0}}>
                                               <route.component/></Box>}
                                              />
           )}

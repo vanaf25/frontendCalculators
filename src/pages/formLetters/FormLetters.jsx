@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 
 const FormLetters = () => {
   const letters=["accounting","legal","officeManager","productionPaperWork",
-    "salesManager","safetyPaperWork","subContractPaperWork","system99Calculator"]
+    "salesManager","safetyPaperWork","subContractPaperWork","system99Calculator"
+    ,]
   return (
     <Box sx={{maxWidth:1000,margin:"10px auto"}}>
       {letters.map(el=>{
