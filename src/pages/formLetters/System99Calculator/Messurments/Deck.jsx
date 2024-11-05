@@ -1,6 +1,6 @@
 import Table from "../../../../components/letters/Table/Table";
 import {Grid} from "@mui/material";
-import {useMemo} from "react";
+import {useCallback, useMemo} from "react";
 import TableName from "../../../../components/letters/TableName/TableName";
 
 const Deck = () => {
@@ -59,11 +59,14 @@ const Deck = () => {
       flex: 1,
     }
   ];
-  const deckSurfaceRowData = [
+  const getDeckSurfaceRowData=useCallback(()=>[
     { deckSurface: '', allLevels: null },
     { deckSurface: '', allLevels: null },
     { deckSurface: '', allLevels: null },
-  ];
+  ])
+  const deckSurfaceRowData1 =useMemo(()=>getDeckSurfaceRowData(),[]);
+  const deckSurfaceRowData2 =useMemo(()=>getDeckSurfaceRowData(),[]);
+  const deckSurfaceRowData3 =useMemo(()=>getDeckSurfaceRowData(),[]);
   const railingColumns = [
     {
       headerName: 'Deck Railing',
@@ -111,9 +114,9 @@ const Deck = () => {
     <div>
       <Grid sx={{mb:2}} container spacing={2}>
         <Grid item xs={12} sm={4}>
-          <Table withOutMargin columns={deckSurfaceColumns} rows={deckSurfaceRowData}/>
-          <Table withOutMargin columns={deckFrameColumns} rows={deckSurfaceRowData}/>
-          <Table withOutMargin columns={deckFrame2Columns} rows={deckSurfaceRowData}/>
+          <Table withOutMargin columns={deckSurfaceColumns} rows={deckSurfaceRowData1}/>
+          <Table withOutMargin columns={deckFrameColumns} rows={deckSurfaceRowData2}/>
+          <Table withOutMargin columns={deckFrame2Columns} rows={deckSurfaceRowData3}/>
         </Grid>
         <Grid item xs={12} sm={4}>
           <Table withOutMargin columns={railingColumns} rows={railingRows}/>
