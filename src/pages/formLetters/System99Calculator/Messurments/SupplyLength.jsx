@@ -19,11 +19,9 @@ const App = () => {
       headerName: operation,
       field: 'operation',
       valueGetter: (params) => {
-        console.log(params.data)
         let { input1, input2 } = params.data;
         input1=Number(input1)
         input2=Number(input2);
-        console.log('i:',input1,input2);
         if (isNaN(input1) || isNaN(input2)) return ""
         switch (operation) {
           case 'Added':
@@ -50,7 +48,6 @@ const App = () => {
         field: "multiply",
         valueGetter: (p) => {
           let {length}=p.data;
-          console.log('l:',length);
           length= Number(length)
           if(isNaN(length)) return ""
           if(length===0) return  "N/A"
