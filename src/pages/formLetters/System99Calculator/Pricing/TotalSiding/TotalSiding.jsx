@@ -73,7 +73,7 @@ const TotalSiding = () => {
   useEffect(() => {
     const func=async ()=>{
       const res=await getAllRowsByType("siding");
-      setData(res);
+      if(res) setData(res);
     }
     func()
   }, []);
