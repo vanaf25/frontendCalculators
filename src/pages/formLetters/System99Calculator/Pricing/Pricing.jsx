@@ -2,6 +2,7 @@ import {Typography} from "@mui/material";
 import ProductTable from "./ProductTable";
 import SectionPatio from "./SectionPatio/SectionPatio";
 import ItemsSection from "./ItemsSection/ItemsSection";
+import TotalSiding from "./TotalSiding/TotalSiding";
 
 const Pricing = () => {
   return (
@@ -10,6 +11,7 @@ const Pricing = () => {
       <ProductTable/>
       <SectionPatio/>
       <ItemsSection/>
+      <TotalSiding/>
     </div>
   );
 };

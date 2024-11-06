@@ -93,6 +93,7 @@ import Material from "./pages/formLetters/System99Calculator/Material/Material";
 import Mesurments from "./pages/formLetters/System99Calculator/Messurments/Mesurments";
 import ComissionSheet from "./pages/formLetters/System99Calculator/ComissionSheet/ComissionSheet";
 import ItemsSection from "./pages/formLetters/System99Calculator/Pricing/ItemsSection/ItemsSection";
+import TotalSiding from "./pages/formLetters/System99Calculator/Pricing/TotalSiding/TotalSiding";
 
 const AdminPage = lazy(() => import(/* webpackChunkName: "AdminPage" */ './pages/AdminPage'));
 
@@ -277,6 +278,7 @@ let routes = [
   {path:"/system99Calculator/Material",component:Material},
   {path:"/system99Calculator/itemsTable",component:ItemsSection},
   {path:"/system99Calculator/Pricing",component:Pricing},
+  {path:"/system99Calculator/siding",component:TotalSiding},
   {path:"/safetyPaperWork",component:SafetyPaperWork},
   {path:"/safetyPaperWork/incidentReport",component:IncidentReport},
   {path:"/safetyPaperWork/safetyViolation",component:SafetyViolation},

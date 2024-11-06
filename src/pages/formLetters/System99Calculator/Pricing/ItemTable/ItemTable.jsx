@@ -2,6 +2,7 @@ import {useMemo, useRef} from 'react';
 import Table from "../../../../../components/letters/Table/Table";
 import TableName from "../../../../../components/letters/TableName/TableName";
 import axios from "axios";
+import {updateRowChanged} from "../../../../../apis/tablesApi";
 
 const ItemTable = ({tableName,rows}) => {
   // Parse input to allow only positive numbers
@@ -76,10 +77,11 @@ const tableRef=useRef();
         const average=gridApi.getCellValue({rowNode,colKey:"average"});
         try {
           // Send a POST/PUT request to update the data on the server
-          await axios.put(`${process.env.REACT_APP_BASE_URL}/tables/${rowId}`, {
-            [changedColumn]:newValue,
+          await updateRowChanged(rowId,{[changedColumn]:newValue,
             average,
-            average_cost:Math.round(average)
+            databaseType:"items",
+            average_cost:Math.round(average)})
+          await axios.put(`${process.env.REACT_APP_BASE_URL}/tables/${rowId}`, {
           });
         } catch (error) {
           console.error("Error updating item:", error);
