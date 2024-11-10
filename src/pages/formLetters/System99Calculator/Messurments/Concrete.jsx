@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import {useEffect, useMemo, useState} from 'react';
 import TableName from "../../../../components/letters/TableName/TableName";
 import Table from "../../../../components/letters/Table/Table";
 import lengthAndWidthColumns from "../../../../consts/LengthAndWidthColumns";
@@ -8,7 +8,6 @@ const Concrete = ({onCellValueChanged,customRef,additionalColumns}) => {
   const [thickness1, setThickness1] = useState('');
   const [thickness2, setThickness2] = useState('');
   const columns=useMemo(()=>([...lengthAndWidthColumns,...additionalColumns]),[lengthAndWidthColumns,additionalColumns])
-  console.log('colum`1`ns:',columns);
   const rows =
     useMemo(()=>(
     [
@@ -19,7 +18,18 @@ const Concrete = ({onCellValueChanged,customRef,additionalColumns}) => {
     ]),
     []
   );
+  useEffect(()=>{
 
+  },[])
+  /*const [isCreated,setIsCreated]=useState(false);
+  useEffect(() => {
+    if(!isCreated){
+      createTable({name:"Concrete",type:"concrete",columns:columns.map(column=>column.field),rows}).then(res=>{
+        setIsCreated(true)
+        console.log('res:',res);
+      })
+    }
+  }, [rows,columns]);*/
   return (
     <div>
       <TableName>
@@ -27,7 +37,6 @@ const Concrete = ({onCellValueChanged,customRef,additionalColumns}) => {
       </TableName>
       <Table
              columns={columns} rows={rows} onCellValueChanged={onCellValueChanged} customRef={customRef} />
-
       {/* Input Fields for Thickness */}
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2,
         marginBottom:2,

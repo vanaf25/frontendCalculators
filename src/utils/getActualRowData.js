@@ -1,6 +1,6 @@
 import {updateRowChanged} from "../apis/tablesApi";
 
-export default  async (api,rowIndex,rowId,databaseType)=>{
+export default  async (api,rowIndex,rowId)=>{
   const row={}
   if (api){
     api.forEachNode((rowNode)=>{
@@ -14,6 +14,6 @@ export default  async (api,rowIndex,rowId,databaseType)=>{
     })
   }
   console.log('actualData:',row);
-  await updateRowChanged(rowId,{...row,databaseType},);
+  await updateRowChanged(rowId,{...row},);
   return row
 }

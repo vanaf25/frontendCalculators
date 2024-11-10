@@ -1,13 +1,9 @@
-import { useMemo } from 'react';
+import {useEffect, useMemo} from 'react';
 import { Box } from '@mui/material';
 import TableName from "../TableName/TableName";
 import Table from "../Table/Table";
 
 const CalculationLabels = ({rowData,tableName }) => {
-  // Prepare row data for ag-Grid
-
-
-  // Column definitions for ag-Grid
   const columnDefs = useMemo(() => [
     {
       headerName: 'Label',
@@ -27,12 +23,15 @@ const CalculationLabels = ({rowData,tableName }) => {
       flex: 1
     }
   ], []);
-
+  useEffect(() => {
+    console.log(`rowData for ${tableName} :`,rowData);
+  }, [rowData]);
   return (
     <Box>
       <TableName>{tableName}</TableName>
       <Box>
         <Table
+          onCellValueChanged={(params)=>console.log('value changed!:',params)}
           rows={rowData}
           columns={columnDefs}
         />

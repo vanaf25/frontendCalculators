@@ -6,40 +6,37 @@ import calculateTotalAmount from "../../../../utils/calculateTotalAmount";
 import {AgGridReact} from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-quartz.css";
-import axios from "axios";
 import {Loading} from "../../../../components/global/loading/Loading";
 import {sidingColumns} from "../../../../consts/formletters/system99Calculator";
 import getActualRowData from "../../../../utils/getActualRowData";
+import {getAllTablesByType} from "../../../../apis/tablesApi";
 //import {updateRowChanged} from "../../../../apis/tablesApi";
 
 const SquareFootage = () => {
-  const columnDefs =  useMemo(()=>([
+ /* const columnDefs =  useMemo(()=>([
     { headerName: 'Length',cellDataType: "number",cellEditor: 'agNumberCellEditor', field: 'length', editable: true,flex:1 },
     { headerName: 'Height',cellDataType: "number",cellEditor: 'agNumberCellEditor', field: 'height', editable: true,flex:1 }
   ]),[])
-  console.log(columnDefs)
   const defaultRowData  = useMemo(() =>([
-    { length: 10, height: null },
-    { length: 10, height:null },
-    { length: 10, height: null },
-    { length: 10, height: null },
-    { length: 10, height: null },
-    { length: 10, height: null },
-  ]), []);
-  console.log(defaultRowData)
+    { length: 10, height: 10 },
+    { length: 10, height:10 },
+    { length: 10, height: 10 },
+    { length: 10, height: 10 },
+    { length: 10, height: 10 },
+    { length: 10, height: 10 },
+  ]), []);*/
   const [isLoading,setIsLoading]=useState(true);
   const [tablesData,setTablesData]=useState([])
   useEffect(() => {
     const func=async ()=>{
       try {
         setIsLoading(true)
-        const res= await axios.get(`${process.env.REACT_APP_BASE_URL}tables/siding`)
+        const res= await getAllTablesByType("siding2")
         console.log('res:',res);
-        setTablesData(res.data);
+        setTablesData(res);
         setIsLoading(false)
       }
       catch (e) {
-        console.log('e:',e);
       setIsLoading(false);
       }
     }
@@ -83,10 +80,9 @@ const SquareFootage = () => {
         ref: extraBuilding2Ref,
       },
     ].map(el=>{
-      console.log('smt:',tablesData.find(table=>table.tableName===el.name)?.rows);
         if (el.name)  return   {...el,
           columns:sidingColumns.map(c=>c.field!=="length" && c.field!=="height" ? {...c,hide:true}:c),
-          rowData:tablesData.find(table=>table.name===el.name)?.rows
+          rowData:tablesData.find(table=>table.tableName===el.name)?.rows
         }
         return {...el,
           columns:[
@@ -116,6 +112,136 @@ const SquareFootage = () => {
       }
     )
   } , [tablesData]);
+  /*useEffect(() => {
+    tableNames.forEach(tableName=>{
+      if(tableName.name){
+        createTable({
+          name:tableName.name,
+          type:"siding",
+          columns:sidingColumns.map(c=>c.field),
+          rows:[
+            {
+              length: 0,
+              height: 0,
+              height_in_inches: 0,
+              total_sq_footage_siding: 0,
+              length_hardie: 0,
+              four_inch_reveal_rows: 0,
+              seven_inch_reveal_rows: 0,
+              ten_half_inch_reveal_rows: 0,
+              four_inch_planks: 0,
+              seven_planks: 0,
+              ten_half_inch_planks: 0,
+              length_vinyl: 0,
+              twelve_rows: 0,
+              seven_rows: 0,
+              double_six: 0,
+              dutch_lap: 0,
+              seven_rows_repeat: 0
+            },
+            {
+              length: 0,
+              height: 0,
+              height_in_inches: 0,
+              total_sq_footage_siding: 0,
+              length_hardie: 0,
+              four_inch_reveal_rows: 0,
+              seven_inch_reveal_rows: 0,
+              ten_half_inch_reveal_rows: 0,
+              four_inch_planks: 0,
+              seven_planks: 0,
+              ten_half_inch_planks: 0,
+              length_vinyl: 0,
+              twelve_rows: 0,
+              seven_rows: 0,
+              double_six: 0,
+              dutch_lap: 0,
+              seven_rows_repeat: 0
+            },
+            {
+              length: 0,
+              height: 0,
+              height_in_inches: 0,
+              total_sq_footage_siding: 0,
+              length_hardie: 0,
+              four_inch_reveal_rows: 0,
+              seven_inch_reveal_rows: 0,
+              ten_half_inch_reveal_rows: 0,
+              four_inch_planks: 0,
+              seven_planks: 0,
+              ten_half_inch_planks: 0,
+              length_vinyl: 0,
+              twelve_rows: 0,
+              seven_rows: 0,
+              double_six: 0,
+              dutch_lap: 0,
+              seven_rows_repeat: 0
+            },
+            {
+              length: 0,
+              height: 0,
+              height_in_inches: 0,
+              total_sq_footage_siding: 0,
+              length_hardie: 0,
+              four_inch_reveal_rows: 0,
+              seven_inch_reveal_rows: 0,
+              ten_half_inch_reveal_rows: 0,
+              four_inch_planks: 0,
+              seven_planks: 0,
+              ten_half_inch_planks: 0,
+              length_vinyl: 0,
+              twelve_rows: 0,
+              seven_rows: 0,
+              double_six: 0,
+              dutch_lap: 0,
+              seven_rows_repeat: 0
+            },
+            {
+              length: 0,
+              height: 0,
+              height_in_inches: 0,
+              total_sq_footage_siding: 0,
+              length_hardie: 0,
+              four_inch_reveal_rows: 0,
+              seven_inch_reveal_rows: 0,
+              ten_half_inch_reveal_rows: 0,
+              four_inch_planks: 0,
+              seven_planks: 0,
+              ten_half_inch_planks: 0,
+              length_vinyl: 0,
+              twelve_rows: 0,
+              seven_rows: 0,
+              double_six: 0,
+              dutch_lap: 0,
+              seven_rows_repeat: 0
+            },
+            {
+              length: 0,
+              height: 0,
+              height_in_inches: 0,
+              total_sq_footage_siding: 0,
+              length_hardie: 0,
+              four_inch_reveal_rows: 0,
+              seven_inch_reveal_rows: 0,
+              ten_half_inch_reveal_rows: 0,
+              four_inch_planks: 0,
+              seven_planks: 0,
+              ten_half_inch_planks: 0,
+              length_vinyl: 0,
+              twelve_rows: 0,
+              seven_rows: 0,
+              double_six: 0,
+              dutch_lap: 0,
+              seven_rows_repeat: 0
+            }
+          ]
+
+        }).then(res=>{
+          console.log('res:',res);
+        })
+      }
+    })
+  }, []);*/
   const [totalHeight,setTotalHeight]=useState(0)
   const calculateTotalHeightAmount=(array)=>{
     const sumWithInitial = array.reduce(
@@ -138,6 +264,7 @@ const SquareFootage = () => {
     }
     else{
       if (params.colDef.field==="height") calculateTotalHeightAmount(tableNames)
+      console.log('id:',params.data);
       await getActualRowData(params.api,params.node.rowIndex,params.data.id,"siding")
     }
 

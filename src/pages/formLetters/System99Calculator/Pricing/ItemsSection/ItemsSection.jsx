@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import ItemTable from '../ItemTable/ItemTable';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import { getAllTablesByType} from "../../../../../apis/tablesApi";
 
 const ItemsSection = () => {
-  console.log('pr:',process.env.REACT_APP_BASE_URL);
   const [tables, setTables] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -13,9 +12,11 @@ const ItemsSection = () => {
     const fetchTables = async () => {
       setIsLoading(true); // Start loading
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}tables`); // Replace with your actual endpoint
-        console.log('res:',response.data);
-        setTables(response.data);
+        const response=await getAllTablesByType("item");
+        console.log('res:',response);
+        if (response.length){
+          setTables(response);
+        }
       } catch (error) {
         console.error("Error fetching tables:", error);
       } finally {
@@ -25,7 +26,6 @@ const ItemsSection = () => {
 
     fetchTables();
   }, []);
-
   return (
     <div>
       {isLoading ? (

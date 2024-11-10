@@ -10,7 +10,6 @@ import {Box, TextField} from "@mui/material";
 
 const Doors = () => {
   const [garageDoorsValue,setGarageDoorsValue]=useState(0);
-  console.log(setGarageDoorsValue)
   const [isLoading,setIsLoading]=useState(true)
   const [data,setData]=useState(false)
   const [totalData,setTotalData]=useState(null);
@@ -126,7 +125,7 @@ const Doors = () => {
         </TableName>
         <Table
           customRef={ref}
-          onCellValueChanged={onCellValueChanged} columns={columns} rows={data} />
+          onCellValueChanged={onCellValueChanged}  columns={columns} rows={data} />
         {totalData && <TotalCalculationsTable tableName={"Door math"} rowData={totalDoorData}/>}
       <Box>
         <TextField label={"Enter a garage doors"}

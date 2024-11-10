@@ -6,13 +6,45 @@ import getActualRowData from "../../../../../utils/getActualRowData";
 import calculateTotalAmount from "../../../../../utils/calculateTotalAmount";
 import {sidingColumns} from "../../../../../consts/formletters/system99Calculator";
 import TotalCalculationsTable from "../../../../../components/letters/TotalCalculationsTable/TotalCalculationsTable";
-
+/*function getDifferences(obj1, obj2) {
+  const differences = {};
+  if (!obj1) obj1={}
+  const allKeys = new Set([...Object.keys(obj1), ...Object.keys(obj2)]);
+  allKeys.forEach(key => {
+    if (obj1[key] !== obj2[key]) {
+      differences[key] = obj2[key]; // Store the value from obj2
+    }
+  });
+  return differences;
+}*/
+const getTotalRows=(totalData)=>{
+  return totalData  ? [{ label: 'Siding Square Footage (D)', value: totalData.sidingSquareFootage ?? 0 },
+    ...totalData.freezeBoard?.map((item, index) => ({ label: `Freeze Board 1x4 (Part ${index + 1})`, value: item })) ?? [],
+    ...totalData.hardieHandNails?.map((item, index) => ({ label: `Hardie Hand Nails (Part ${index + 1})`, value: item?.toFixed(2) ?? "0.00" })) ?? [],
+    { label: 'Hardie Color Match Trim', value: totalData.hardieColorMatchTrim?.toFixed(2) ?? "0.00" },
+    { label: 'Square Foot per Item', value: totalData.squareFootPerItem ?? 0 },
+    { label: 'Quantity Needed', value: totalData.quantityNeeded?.toFixed(2) ?? "0.00" },
+    { label: 'Number of Nails Needed', value: totalData.numberOfNailsNeeded?.toFixed(2) ?? "0.00" },
+    { label: 'Number of Boxes', value: totalData.numberOfBoxes ?? 0 },
+    { label: 'Siding Linear Footage', value: totalData.sidingLinearFootage ?? 0 },
+    { label: 'Hardie Color Match Base', value: totalData.hardieColorMatchBase?.toFixed(2) ?? "0.00" },
+    ...totalData.hardieCoilNails?.map((item, index) => ({ label: `Hardie Coil Nails (Part ${index + 1})`, value: item?.toFixed(2) ?? "0.00" })) ?? [],
+    { label: 'Paint Siding Labor Cost', value: totalData.paintSidingLaborCost?.toFixed(2) ?? "0.00" },
+    { label: 'Install Hardie Siding', value: totalData.installHardieSiding?.toFixed(2) ?? "0.00" },
+    { label: 'Siding Labor Cost', value: totalData.sidingLaborCost?.toFixed(2) ?? "0.00" },
+    { label: 'OSB and Plywood Labor', value: totalData.osbAndPlywoodLabor?.toFixed(2) ?? "0.00" },
+    { label: 'Double Six', value: totalData.doubleSix ?? 0 },
+    { label: 'Dutch Lap', value: totalData.dutchLap ?? 0 },
+    { label: 'Seven Inch', value: totalData.sevenInch ?? 0 },
+    { label: 'Number of 5.25 Inch Planks', value: totalData.numberOf5InchPlanks ?? 0 },
+    { label: 'Number of 8.24 Inch Planks', value: totalData.numberOf8InchPlanks ?? 0 },
+    { label: 'Number of 11.5 Inch Planks', value: totalData.numberOf11InchPlanks ?? 0 }]:[]
+}
 const TotalSiding = () => {
   const ref=useRef(null);
   const [data,setData]=useState([]);
   const [totalData,setTotalData]=useState(null)
-  const calculateTotal=useCallback(()=>{
-    console.log('calculate!');
+  const calculateTotal=(changedInCell=false)=>{
     const sidingSquareFootage = calculateTotalAmount(ref, 'total_sq_footage_siding');
     const sumLengthA = calculateTotalAmount(ref, 'length');
     const sumLengthD = calculateTotalAmount(ref, 'total_sq_footage_siding');
@@ -40,9 +72,7 @@ const TotalSiding = () => {
     const numberOf5InchPlanks = sumPlanksI;
     const numberOf8InchPlanks = sumPlanksJ;
     const numberOf11InchPlanks = sumPlanksK;
-
-    // Store the calculations in state
-    setTotalData({
+    const newTotalData={
       sidingLaborCost,
       osbAndPlywoodLabor:sumLengthD*1.5,
       doubleSix:sumColumnQ,
@@ -64,38 +94,45 @@ const TotalSiding = () => {
       numberOf5InchPlanks,
       numberOf8InchPlanks,
       numberOf11InchPlanks
-    });
-  },[ref])
-  const totalRows=useMemo(()=> ([
-    { label: 'Siding Square Footage (D)', value: totalData.sidingSquareFootage },
-    ...totalData.freezeBoard.map((item, index) => ({ label: `Freeze Board 1x4 (Part ${index + 1})`, value: item })),
-    ...totalData.hardieHandNails.map((item, index) => ({ label: `Hardie Hand Nails (Part ${index + 1})`, value: item.toFixed(2) })),
-    { label: 'Hardie Color Match Trim', value: totalData.hardieColorMatchTrim.toFixed(2) },
-    { label: 'Square Foot per Item', value: totalData.squareFootPerItem },
-    { label: 'Quantity Needed', value: totalData.quantityNeeded.toFixed(2) },
-    { label: 'Number of Nails Needed', value: totalData.numberOfNailsNeeded.toFixed(2) },
-    { label: 'Number of Boxes', value: totalData.numberOfBoxes },
-    { label: 'Siding Linear Footage', value: totalData.sidingLinearFootage },
-    { label: 'Hardie Color Match Base', value: totalData.hardieColorMatchBase.toFixed(2) },
-    ...totalData.hardieCoilNails.map((item, index) => ({ label: `Hardie Coil Nails (Part ${index + 1})`, value: item.toFixed(2) })),
-    { label: 'Paint Siding Labor Cost', value: totalData.paintSidingLaborCost.toFixed(2) },
-    { label: 'Install Hardie Siding', value: totalData.installHardieSiding.toFixed(2) },
-    { label: 'Siding Labor Cost', value: totalData.sidingLaborCost.toFixed(2) },
-    { label: 'OSB and Plywood Labor', value: totalData.osbAndPlywoodLabor.toFixed(2) },
-    { label: 'Double Six', value: totalData.doubleSix },
-    { label: 'Dutch Lap', value: totalData.dutchLap },
-    { label: 'Seven Inch', value: totalData.sevenInch },
-    { label: 'Number of 5.25 Inch Planks', value: totalData.numberOf5InchPlanks },
-    { label: 'Number of 8.24 Inch Planks', value: totalData.numberOf8InchPlanks },
-    { label: 'Number of 11.5 Inch Planks', value: totalData.numberOf11InchPlanks },
-  ]),[totalData]);
-  console.log('total:',totalData);
+    }
+    setTotalData(newTotalData);
+    if(changedInCell){
+      console.log('newTotalRows:',getTotalRows(newTotalData))
+    }
+  }
+  const totalRows = useMemo(() => {
+    if (!totalData) return []; // Return an empty array if totalData is null or undefined
+    return [
+      { label: 'Siding Square Footage (D)', value: totalData.sidingSquareFootage ?? 0 },
+      ...totalData.freezeBoard?.map((item, index) => ({ label: `Freeze Board 1x4 (Part ${index + 1})`, value: item })) ?? [],
+      ...totalData.hardieHandNails?.map((item, index) => ({ label: `Hardie Hand Nails (Part ${index + 1})`, value: item?.toFixed(2) ?? "0.00" })) ?? [],
+      { label: 'Hardie Color Match Trim', value: totalData.hardieColorMatchTrim?.toFixed(2) ?? "0.00" },
+      { label: 'Square Foot per Item', value: totalData.squareFootPerItem ?? 0 },
+      { label: 'Quantity Needed', value: totalData.quantityNeeded?.toFixed(2) ?? "0.00" },
+      { label: 'Number of Nails Needed', value: totalData.numberOfNailsNeeded?.toFixed(2) ?? "0.00" },
+      { label: 'Number of Boxes', value: totalData.numberOfBoxes ?? 0 },
+      { label: 'Siding Linear Footage', value: totalData.sidingLinearFootage ?? 0 },
+      { label: 'Hardie Color Match Base', value: totalData.hardieColorMatchBase?.toFixed(2) ?? "0.00" },
+      ...totalData.hardieCoilNails?.map((item, index) => ({ label: `Hardie Coil Nails (Part ${index + 1})`, value: item?.toFixed(2) ?? "0.00" })) ?? [],
+      { label: 'Paint Siding Labor Cost', value: totalData.paintSidingLaborCost?.toFixed(2) ?? "0.00" },
+      { label: 'Install Hardie Siding', value: totalData.installHardieSiding?.toFixed(2) ?? "0.00" },
+      { label: 'Siding Labor Cost', value: totalData.sidingLaborCost?.toFixed(2) ?? "0.00" },
+      { label: 'OSB and Plywood Labor', value: totalData.osbAndPlywoodLabor?.toFixed(2) ?? "0.00" },
+      { label: 'Double Six', value: totalData.doubleSix ?? 0 },
+      { label: 'Dutch Lap', value: totalData.dutchLap ?? 0 },
+      { label: 'Seven Inch', value: totalData.sevenInch ?? 0 },
+      { label: 'Number of 5.25 Inch Planks', value: totalData.numberOf5InchPlanks ?? 0 },
+      { label: 'Number of 8.24 Inch Planks', value: totalData.numberOf8InchPlanks ?? 0 },
+      { label: 'Number of 11.5 Inch Planks', value: totalData.numberOf11InchPlanks ?? 0 },
+    ];
+  }, [totalData]);
+
   useEffect(()=>{
     if (ref.current && data.length) calculateTotal()
   },[ref.current,data]);
   useEffect(() => {
     const func=async ()=>{
-      const res=await getAllRowsByType("siding");
+      const res=await getAllRowsByType("siding2");
       if(res) setData(res);
     }
     func()
@@ -119,15 +156,15 @@ const TotalSiding = () => {
       else{
         console.log('greater than o!');
         await getActualRowData(params.api,params.node.rowIndex,params.data.id,"siding");
-        calculateTotal()
+        calculateTotal(true)
       }
-  }, []);
+  }, [totalData]);
   return (
   <div>
         <TableName>Total siding</TableName>
         <Table  onCellValueChanged={onCellValueChanged} customRef={ref}
                columns={columnDefs} rows={data}/>
-    {totalData && <TotalCalculationsTable tableName={"Total Siding"} rowData={totalRows}/>}
+    {totalData && <TotalCalculationsTable tableName={"Siding math"} rowData={totalRows}/>}
     </div>
   );
 };

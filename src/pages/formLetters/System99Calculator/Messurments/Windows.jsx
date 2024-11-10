@@ -14,13 +14,10 @@ const Windows = () => {
   const [totalData,setTotalData]=useState(null);
   const ref=useRef(null);
   const calculateWindowsMath=useCallback(()=>{
-    console.log('data:',data)
-    console.log('ref:',ref);
     if(data.length && ref.current){
       const sumFirstColumn = calculateTotalAmount(ref, 'under_3_feet_wide');
       const sumSecondColumn = calculateTotalAmount(ref, 'between_3_and_6_feet_wide');
       const sumThirdColumn = calculateTotalAmount(ref, 'over_6_feet_wide');
-      console.log('sum:',sumFirstColumn,sumSecondColumn,sumThirdColumn);
       // Window calculations for each category
       const windows3FeetAndUnder = [sumFirstColumn, 200, sumFirstColumn * sumSecondColumn];
       const windowsBetween3And6Feet = [sumSecondColumn, 264, sumSecondColumn * 264];
@@ -76,6 +73,7 @@ const Windows = () => {
     }
     func()
   }, []);
+
   const windowsColumns = useMemo(() =>([
     {
       headerName: '3 feet Tall and under',
@@ -155,6 +153,10 @@ const Windows = () => {
       { label: 'Window Outside 1x4x12 Trim', value: data.windowOutsideTrim }
     ];
   }, [totalData]);
+  useEffect(()=>()=>{
+    console.log('window math columns:',["label","value"])
+    console.log(' math rows:',windowMath);
+  },[windowMath])
   return (
     <div>
       {isLoading ? <CircularProgress/>:<>
