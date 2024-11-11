@@ -1,7 +1,6 @@
 import {useMemo, useRef} from 'react';
 import Table from "../../../../../components/letters/Table/Table";
 import TableName from "../../../../../components/letters/TableName/TableName";
-import axios from "axios";
 import {updateRowChanged} from "../../../../../apis/tablesApi";
 
 const ItemTable = ({tableName,rows}) => {
@@ -63,32 +62,8 @@ const tableRef=useRef();
     }));
   }, []);
   const handleCellEditCommit = async (params) => {
-    console.log('params:',params);
     const rowId=params.data.id;
-    const changedColumn=params.colDef.field;
-    const newValue=params.newValue;
-    console.log('rowId:',rowId);
-    console.log('changedColumn:',changedColumn)
-    console.log('newValue:',newValue);
-    const gridApi=tableRef?.current?.api
-    gridApi.forEachNode(async (rowNode)=>{
-      console.log('node:',rowNode);
-      if (rowNode.rowIndex===params.rowIndex){
-        const average=gridApi.getCellValue({rowNode,colKey:"average"});
-        try {
-          // Send a POST/PUT request to update the data on the server
-          await updateRowChanged(rowId,{[changedColumn]:newValue,
-            average,
-            databaseType:"items",
-            average_cost:Math.round(average)})
-          await axios.put(`${process.env.REACT_APP_BASE_URL}/tables/${rowId}`, {
-          });
-        } catch (error) {
-          console.error("Error updating item:", error);
-        }
-        console.log('averageColumn:',average);
-      }
-    })
+    await updateRowChanged(rowId,params.data)
   };
   return (
     <div>

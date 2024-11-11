@@ -7,7 +7,6 @@ import { getAllTablesByType} from "../../../../../apis/tablesApi";
 const ItemsSection = () => {
   const [tables, setTables] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
   useEffect(() => {
     const fetchTables = async () => {
       setIsLoading(true); // Start loading
@@ -34,7 +33,7 @@ const ItemsSection = () => {
         </Box>
       ) : (
         tables.map((table) => (
-          <ItemTable key={table.id} tableName={table.name} rows={table.rows} />
+          <ItemTable key={table.tableName} tableName={table.tableName} rows={table.rows} />
         ))
       )}
     </div>
